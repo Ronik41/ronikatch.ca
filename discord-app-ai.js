@@ -597,7 +597,7 @@ What would you like to know more about?`;
         if (sender === 'bot') {
             avatar.innerHTML = '<i class="fas fa-robot"></i>';
         } else {
-            avatar.innerHTML = '<img src="profile-picture.png" alt="You" />';
+            avatar.innerHTML = '<img src="images/roni profile picture.png" alt="You" />';
             avatar.style.backgroundColor = '#7289da';
         }
 
