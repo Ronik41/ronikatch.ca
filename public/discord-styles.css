@@ -857,6 +857,17 @@ body {
     color: #ffffff;
 }
 
+/* Hide mobile elements on desktop */
+@media (min-width: 769px) {
+    .mobile-user-toggle {
+        display: none !important;
+    }
+    
+    .mobile-user-profile {
+        display: none !important;
+    }
+}
+
 /* Mobile Responsive Design - Desktop layout preserved above 768px */
 
 /* Tablet and Mobile Landscape */
@@ -1083,7 +1094,7 @@ body {
     }
     
     .mobile-user-profile {
-        display: none;
+        display: none !important;
         position: fixed;
         top: 60px;
         right: 10px;
