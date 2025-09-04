@@ -1,2 +1,16 @@
-projects.html
-projects
+# API Keys and sensitive files
+.env
+.env.local
+*.key
+config.js
+
+# macOS
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
