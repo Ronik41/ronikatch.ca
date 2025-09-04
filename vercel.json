@@ -1,6 +1,4 @@
 {
-  "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": ".",
   "functions": {
     "api/chat.js": {
       "maxDuration": 30

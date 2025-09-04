@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrium Server - Roni's Portfolio</title>
+    <link rel="stylesheet" href="discord-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="discord-container">
+        <!-- Left Sidebar - Server List -->
+        <div class="servers-sidebar">
+            <div class="server-list">
+                <a href="discord-portfolio.html" class="server-item">
+                    <div class="server-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </a>
+                <div class="server-separator"></div>
+                <a href="tesla-server.html" class="server-item">
+                    <div class="server-icon tesla-icon">
+                        <img src="images/tesla logo new.svg" alt="Tesla" />
+                    </div>
+                    <div class="server-tooltip">Tesla</div>
+                </a>
+                <a href="whoop-server.html" class="server-item">
+                    <div class="server-icon whoop-icon">
+                        <img src="logos/whoop-logo.png" alt="WHOOP" />
+                    </div>
+                    <div class="server-tooltip">WHOOP</div>
+                </a>
+                <a href="ford-server.html" class="server-item">
+                    <div class="server-icon ford-icon">
+                        <img src="logos/ford-logo.jpg" alt="Ford" />
+                    </div>
+                    <div class="server-tooltip">Ford Motor Company</div>
+                </a>
+                <a href="electrium-server.html" class="server-item active">
+                    <div class="server-icon electrium-icon">
+                        <img src="logos/electrium-logo.jpg" alt="Electrium" />
+                    </div>
+                    <div class="server-tooltip">Electrium Mobility</div>
+                </a>
+                <a href="exceed-server.html" class="server-item">
+                    <div class="server-icon exceed-icon">
+                        <img src="images/exceed robotics logo.png" alt="Exceed Robotics" />
+                    </div>
+                    <div class="server-tooltip">Exceed Robotics</div>
+                </a>
+                <div class="server-separator"></div>
+                <a href="projects-server.html" class="server-item">
+                    <div class="server-icon projects-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="server-tooltip">Projects</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Channels Sidebar -->
+            <div class="channels-sidebar">
+                <div class="server-header">
+                    <h3>Electrium Mobility</h3>
+                    <p class="server-subtitle">Embedded Systems</p>
+                </div>
+                <div class="channel-list">
+                    <div class="channel-category">
+                        <h4>EXPERIENCE</h4>
+                        <div class="channel-item active" data-channel="overview">
+                            <i class="fas fa-hashtag"></i>
+                            <span>overview</span>
+                        </div>
+                        <div class="channel-item" data-channel="achievements">
+                            <i class="fas fa-hashtag"></i>
+                            <span>achievements</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <h3># overview</h3>
+                    <p>General information about Roni's Electrium experience</p>
+                </div>
+                <div class="messages-container">
+                    <div class="channel-content active" id="overview-content">
+                        <!-- Pinned Message -->
+                        <div class="pinned-message">
+                            <div class="pinned-icon">
+                                <i class="fas fa-thumbtack"></i>
+                            </div>
+                            <div class="pinned-content">
+                                <div class="pinned-header">
+                                    <span class="pinned-label">Pinned Message</span>
+                                </div>
+                                <div class="pinned-text">
+                                    ⚠️ **Disclaimer:** This is a mockup server created for Roni's portfolio. This is not an official Electrium Mobility communication channel.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message bot-message">
+                            <div class="message-avatar electrium-avatar">
+                                <img src="logos/electrium-logo.jpg" alt="Electrium" />
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="username">Electrium Engineering</span>
+                                    <span class="timestamp">Aug 2023 - Jan 2024</span>
+                                </div>
+                                <div class="message-text">
+⚡ **Welcome to Electrium Mobility!**
+
+Roni Katcharovski joined our Embedded Systems team as a developer from August 2023 to January 2024 in Waterloo.
+
+Electrium Mobility specializes in electric vehicle technology and embedded systems development for sustainable transportation solutions.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message user-message">
+                            <div class="message-avatar">
+                                <img src="profile-picture.png" alt="Roni" />
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="username">Roni Katcharovski</span>
+                                    <span class="timestamp">Jan 2024</span>
+                                </div>
+                                <div class="message-text">
+Thank you for the incredible opportunity! I was excited to be part of the Electrium team and contribute to embedded systems development.
+
+I gained valuable experience working on UART communication protocols and real-time motor control systems for electric vehicles, achieving significant cost savings and system improvements.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Channel -->
+                    <div class="channel-content" id="achievements-content" style="display: none;">
+                        <div class="message user-message">
+                            <div class="message-avatar">
+                                <img src="profile-picture.png" alt="Roni" />
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="username">Roni Katcharovski</span>
+                                    <span class="timestamp">Jan 2024</span>
+                                </div>
+                                <div class="message-text">
+🏆 **Key Achievements at Electrium:**
+
+**Communication Systems:**
+• Implemented UART communication protocols for system-level integration between electronic speed controller's Bluetooth module and remote control using real-time programming
+
+**Hardware Optimization:**
+• Achieved $200 cost avoidance through PCB component diagnosis & precision soldering of replacement chip for hardware validation
+• Synchronized dual-controller system with CAN bus communication by constructing custom cable with JST connectors for embedded systems integration
+
+**Motor Control:**
+• Programmed PWM control algorithms for 3-phase DC MOSFET bridge to achieve dynamic motor speed control up to 40km/h in real-time systems
+• Developed real-time control systems for electric vehicle propulsion
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="server-navigation.js"></script>
+</body>
+</html>
