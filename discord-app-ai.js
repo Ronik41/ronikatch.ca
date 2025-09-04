@@ -695,8 +695,9 @@ What would you like to know more about?`;
     handleServerClick(item) {
         // Server navigation logic (if needed)
         const server = item.dataset.server;
-        if (server) {
-            // Handle server-specific logic
+        if (server === 'home') {
+            // Home button - redirect to root domain
+            window.location.href = '/';
         }
     }
 
