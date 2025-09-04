@@ -4,12 +4,203 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roni Katcharovski - Portfolio</title>
-    <script>
-        // Redirect to the main portfolio page
-        window.location.href = 'discord-portfolio.html';
-    </script>
+    <link rel="stylesheet" href="discord-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <p>Redirecting to portfolio...</p>
+    <div class="discord-container">
+        <!-- Left Sidebar - Server List -->
+        <div class="servers-sidebar">
+            <div class="server-list">
+                <div class="server-item home active" data-server="home">
+                    <div class="server-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <div class="server-separator"></div>
+                <a href="tesla-server.html" class="server-item" data-server="tesla">
+                    <div class="server-icon tesla-icon">
+                        <img src="images/tesla logo new.svg" alt="Tesla" />
+                    </div>
+                    <div class="server-tooltip">Tesla</div>
+                </a>
+                <a href="whoop-server.html" class="server-item" data-server="whoop">
+                    <div class="server-icon whoop-icon">
+                        <img src="logos/whoop-logo.png" alt="WHOOP" />
+                    </div>
+                    <div class="server-tooltip">WHOOP</div>
+                </a>
+                <a href="ford-server.html" class="server-item" data-server="ford">
+                    <div class="server-icon ford-icon">
+                        <img src="logos/ford-logo.jpg" alt="Ford" />
+                    </div>
+                    <div class="server-tooltip">Ford Motor Company</div>
+                </a>
+                <a href="electrium-server.html" class="server-item" data-server="electrium">
+                    <div class="server-icon electrium-icon">
+                        <img src="logos/electrium-logo.jpg" alt="Electrium" />
+                    </div>
+                    <div class="server-tooltip">Electrium Mobility</div>
+                </a>
+                <a href="exceed-server.html" class="server-item" data-server="exceed">
+                    <div class="server-icon exceed-icon">
+                        <img src="images/exceed robotics logo.png" alt="Exceed Robotics" />
+                    </div>
+                    <div class="server-tooltip">Exceed Robotics</div>
+                </a>
+                <div class="server-separator"></div>
+                <a href="projects-server.html" class="server-item" data-server="projects">
+                    <div class="server-icon projects-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="server-tooltip">Projects</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Channel Sidebar -->
+            <div class="channels-sidebar">
+                <div class="server-header">
+                    <h3 id="server-title">Direct Messages</h3>
+                </div>
+                <div class="channel-list">
+                    <div class="channel-item active">
+                        <i class="fas fa-robot"></i>
+                        <span>RoniBot</span>
+                        <div class="status-indicator online"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <i class="fas fa-robot"></i>
+                        <span>RoniBot</span>
+                        <div class="status-text">Ask me anything about Roni!</div>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="username">RoniBot</span>
+                                <span class="timestamp" id="bot-timestamp">Today at 12:00 PM</span>
+                                <span class="bot-tag">BOT</span>
+                            </div>
+                            <div class="message-text">
+👋 Hey there! I'm RoniBot, and I know everything about Roni Katcharovski.
+Ask me about his experience, skills, projects, or anything else you'd like to know!
+
+Check out the servers on the left to see detailed information about his experiences at different companies!
+
+Try asking things like:
+• "What experience does Roni have?"
+• "Tell me about his projects"
+• "What programming languages does he know?"
+• "Where has he worked?"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-input-container">
+                    <div class="message-input-wrapper">
+                        <input type="text" id="messageInput" placeholder="Message @RoniBot" autocomplete="off">
+                        <button id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - User Profile -->
+        <div class="user-sidebar">
+            <div class="user-profile">
+                <div class="user-banner"></div>
+                <div class="user-avatar">
+                    <div class="avatar-circle">
+                        <img src="profile-picture.png" alt="Roni Katcharovski" />
+                    </div>
+                    <div class="status-badge online"></div>
+                </div>
+                <div class="user-info">
+                    <h2>Roni Katcharovski</h2>
+                    <p class="user-tag">Computer Engineering Student</p>
+                    <div class="user-status">
+                        <div class="status-indicator online"></div>
+                        <span>Looking for Summer 2026 Opportunities</span>
+                    </div>
+                </div>
+                
+                <div class="user-details">
+                    <div class="detail-section">
+                        <h4>About Me</h4>
+                        <p>Computer Engineering student at University of Waterloo with experience in embedded systems, manufacturing software, and real-time systems.</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Contact</h4>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>roni.katch@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/roni-katcharovski" target="_blank">LinkedIn</a>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Core Skills</h4>
+                        <div class="skills-tags">
+                            <span class="skill-tag">C/C++</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Embedded Systems</span>
+                            <span class="skill-tag">STM32</span>
+                            <span class="skill-tag">Real-time Systems</span>
+                            <span class="skill-tag">UART/SPI/I2C</span>
+                            <span class="skill-tag">Hardware Testing</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Education</h4>
+                        <p><strong>University of Waterloo</strong><br>
+                        Bachelor of Applied Science in Computer Engineering<br>
+                        Co-op Program • 2023 – Present</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Detail Modals -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Legal Footer -->
+    <footer class="legal-footer">
+        <div class="legal-content">
+            <p><strong>Legal Disclaimer:</strong> This is a personal portfolio website created as a parody/tribute to Discord's interface design. This website is not affiliated with, endorsed by, or connected to Discord Inc. in any way.</p>
+            <p><strong>Discord Trademark Notice:</strong> "Discord" is a trademark of Discord Inc. All rights reserved. This website uses the Discord interface design for portfolio purposes only and does not claim ownership of the Discord brand or design elements.</p>
+            <p><strong>Fair Use:</strong> This website is created for educational and portfolio purposes under fair use principles. No commercial use is intended.</p>
+            <p><strong>Contact:</strong> For any legal concerns, please contact roni.katch@gmail.com</p>
+        </div>
+    </footer>
+
+    <script src="discord-app-ai.js"></script>
 </body>
 </html>
