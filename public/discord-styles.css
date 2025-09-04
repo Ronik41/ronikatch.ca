@@ -874,11 +874,13 @@ body {
 @media (max-width: 768px) {
     body {
         overflow-x: hidden;
+        overflow-y: auto;
     }
     
     .discord-container {
         flex-direction: column;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
     }
     
     /* Mobile Server Navigation */
@@ -935,6 +937,7 @@ body {
         width: 100%;
         margin-right: 0;
         margin-bottom: 0;
+        min-height: 0;
     }
     
     .chat-header {
@@ -955,6 +958,8 @@ body {
         flex: 1;
         padding: 16px;
         overflow-y: auto;
+        min-height: 200px;
+        max-height: calc(100vh - 200px);
     }
     
     .message {
@@ -985,6 +990,10 @@ body {
     .message-input-container {
         padding: 12px 16px;
         border-top: 1px solid #40444b;
+        background-color: #36393f;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
     }
     
     .message-input-wrapper {
