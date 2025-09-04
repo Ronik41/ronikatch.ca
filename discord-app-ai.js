@@ -2,7 +2,7 @@
 class RoniBot {
     constructor() {
         // Using secure server-side API
-        this.apiEndpoint = 'https://your-vercel-app.vercel.app/api/chat';
+        this.apiEndpoint = 'https://ronik41-github-io.vercel.app/api/chat';
         
         // Rate limiting and protection
         this.rateLimits = {
