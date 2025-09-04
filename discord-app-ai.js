@@ -1,8 +1,8 @@
 // Discord Portfolio JavaScript with AI Integration
 class RoniBot {
     constructor() {
-        // API key will be loaded securely
-        this.geminiApiKey = this.loadApiKey();
+        // Using secure server-side API
+        this.apiEndpoint = 'https://your-vercel-app.vercel.app/api/chat';
         
         // Rate limiting and protection
         this.rateLimits = {
@@ -129,21 +129,7 @@ class RoniBot {
         this.init();
     }
 
-    loadApiKey() {
-        // Load API key from secure file (not committed to Git)
-        if (typeof window !== 'undefined' && window.GEMINI_API_KEY) {
-            return window.GEMINI_API_KEY;
-        }
-        
-        // Fallback: try to load from localStorage (for development)
-        const storedKey = localStorage.getItem('gemini_api_key');
-        if (storedKey) {
-            return storedKey;
-        }
-        
-        // No key available - will use pattern matching fallback
-        return null;
-    }
+    // No longer needed - using server-side API
 
     init() {
         this.messagesContainer = document.getElementById('messages');
@@ -264,15 +250,6 @@ class RoniBot {
 
     async generateAIResponse(message) {
         try {
-            // Check if API key is available
-            if (!this.geminiApiKey) {
-                console.log('No API key available, using fallback');
-                this.removeTypingIndicator();
-                const fallbackResponse = this.generateResponse(message);
-                this.addMessage(fallbackResponse, 'bot');
-                return;
-            }
-
             // Check if we should use AI or fallback (for cost control)
             if (this.shouldUseFallback()) {
                 console.log('Using fallback due to high usage or error rate');
@@ -303,9 +280,9 @@ Instructions:
 
 Please provide a helpful, conversational response about Roni.`;
 
-            console.log('Calling Gemini API with prompt:', prompt.substring(0, 200) + '...');
-            const response = await this.callGeminiAPI(prompt);
-            console.log('Gemini API response:', response);
+            console.log('Calling secure API with prompt:', prompt.substring(0, 200) + '...');
+            const response = await this.callSecureAPI(prompt);
+            console.log('Secure API response:', response);
             
             // Remove typing indicator and show response
             setTimeout(() => {
@@ -314,7 +291,7 @@ Please provide a helpful, conversational response about Roni.`;
             }, 1000 + Math.random() * 1000);
             
         } catch (error) {
-            console.error('AI API Error:', error);
+            console.error('Secure API Error:', error);
             console.log('Falling back to pattern matching...');
             
             // Track API errors
@@ -337,66 +314,36 @@ Please provide a helpful, conversational response about Roni.`;
         return apiErrorRate > 0.3 || isHighUsage;
     }
 
-    async callGeminiAPI(prompt) {
+    async callSecureAPI(prompt) {
         try {
-            // Use the correct API endpoint for Gemini
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.geminiApiKey}`, {
+            const response = await fetch(this.apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: prompt
-                        }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        topK: 40,
-                        topP: 0.95,
-                        maxOutputTokens: 1024,
-                    },
-                    safetySettings: [
-                        {
-                            category: "HARM_CATEGORY_HARASSMENT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_HATE_SPEECH",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        }
-                    ]
+                    message: prompt
                 })
             });
 
-            console.log('API Response Status:', response.status);
-            console.log('API Response Headers:', response.headers);
+            console.log('Secure API Response Status:', response.status);
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('API Error Details:', errorData);
-                throw new Error(`API request failed: ${response.status} - ${JSON.stringify(errorData)}`);
+                console.error('Secure API Error Details:', errorData);
+                throw new Error(`Secure API request failed: ${response.status} - ${JSON.stringify(errorData)}`);
             }
 
             const data = await response.json();
-            console.log('Full API Response:', data);
+            console.log('Secure API Response:', data);
             
-            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                throw new Error('Invalid API response structure');
+            if (!data.response) {
+                throw new Error('Invalid secure API response structure');
             }
             
-            return data.candidates[0].content.parts[0].text;
+            return data.response;
         } catch (error) {
-            console.error('Gemini API Error:', error);
+            console.error('Secure API Error:', error);
             throw error;
         }
     }
