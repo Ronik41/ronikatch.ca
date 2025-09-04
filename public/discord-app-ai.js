@@ -149,6 +149,43 @@ class RoniBot {
         document.querySelectorAll('.server-item').forEach(item => {
             item.addEventListener('click', () => this.handleServerClick(item));
         });
+
+        // Mobile user profile toggle
+        this.initMobileUserProfile();
+    }
+
+    initMobileUserProfile() {
+        const toggleButton = document.getElementById('mobileUserToggle');
+        const userProfile = document.getElementById('mobileUserProfile');
+        
+        if (toggleButton && userProfile) {
+            // Show toggle button on mobile
+            if (window.innerWidth <= 768) {
+                toggleButton.style.display = 'block';
+            }
+            
+            // Toggle profile visibility
+            toggleButton.addEventListener('click', () => {
+                userProfile.classList.toggle('show');
+            });
+            
+            // Close profile when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userProfile.contains(e.target) && !toggleButton.contains(e.target)) {
+                    userProfile.classList.remove('show');
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 768) {
+                    toggleButton.style.display = 'block';
+                } else {
+                    toggleButton.style.display = 'none';
+                    userProfile.classList.remove('show');
+                }
+            });
+        }
     }
 
     updateTimestamp() {
