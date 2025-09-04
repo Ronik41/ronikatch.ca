@@ -1066,7 +1066,7 @@ body {
     }
     
     .mobile-user-toggle {
-        display: block;
+        display: none; /* Hidden by default */
         position: fixed;
         top: 10px;
         right: 10px;
@@ -1152,6 +1152,11 @@ body {
     .mobile-user-profile .skill-tag {
         font-size: 11px;
         padding: 2px 6px;
+    }
+    
+    /* Show mobile toggle button only on mobile */
+    .mobile-user-toggle {
+        display: block;
     }
     
     /* Mobile Legal Footer */
