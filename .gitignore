@@ -3,6 +3,7 @@
 .env.local
 *.key
 config.js
+api-key.js
 
 # macOS
 .DS_Store

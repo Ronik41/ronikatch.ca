@@ -1,8 +1,8 @@
 // Discord Portfolio JavaScript with AI Integration
 class RoniBot {
     constructor() {
-        // Hardcoded API key for public use
-        this.geminiApiKey = 'AIzaSyD0iIBDRKHTg1KcutjwqGb523R2jm_1X-I';
+        // API key will be loaded securely
+        this.geminiApiKey = this.loadApiKey();
         
         // Rate limiting and protection
         this.rateLimits = {
@@ -129,6 +129,21 @@ class RoniBot {
         this.init();
     }
 
+    loadApiKey() {
+        // Load API key from secure file (not committed to Git)
+        if (typeof window !== 'undefined' && window.GEMINI_API_KEY) {
+            return window.GEMINI_API_KEY;
+        }
+        
+        // Fallback: try to load from localStorage (for development)
+        const storedKey = localStorage.getItem('gemini_api_key');
+        if (storedKey) {
+            return storedKey;
+        }
+        
+        // No key available - will use pattern matching fallback
+        return null;
+    }
 
     init() {
         this.messagesContainer = document.getElementById('messages');
@@ -249,6 +264,14 @@ class RoniBot {
 
     async generateAIResponse(message) {
         try {
+            // Check if API key is available
+            if (!this.geminiApiKey) {
+                console.log('No API key available, using fallback');
+                this.removeTypingIndicator();
+                const fallbackResponse = this.generateResponse(message);
+                this.addMessage(fallbackResponse, 'bot');
+                return;
+            }
 
             // Check if we should use AI or fallback (for cost control)
             if (this.shouldUseFallback()) {
