@@ -597,8 +597,14 @@ What would you like to know more about?`;
         if (sender === 'bot') {
             avatar.innerHTML = '<i class="fas fa-robot"></i>';
         } else {
-            avatar.innerHTML = '<img src="images/roni profile picture.png" alt="You" />';
+            avatar.innerHTML = 'U';
             avatar.style.backgroundColor = '#7289da';
+            avatar.style.color = '#ffffff';
+            avatar.style.fontWeight = 'bold';
+            avatar.style.fontSize = '16px';
+            avatar.style.display = 'flex';
+            avatar.style.alignItems = 'center';
+            avatar.style.justifyContent = 'center';
         }
 
         const content = document.createElement('div');
