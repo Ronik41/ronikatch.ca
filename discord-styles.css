@@ -857,40 +857,243 @@ body {
     color: #ffffff;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .discord-container {
-        flex-direction: column;
+/* Mobile Responsive Design - Desktop layout preserved above 768px */
+
+/* Tablet and Mobile Landscape */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .user-sidebar {
+        width: 250px;
     }
     
+    .user-details {
+        font-size: 14px;
+    }
+}
+
+/* Mobile Portrait */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+    
+    .discord-container {
+        flex-direction: column;
+        height: 100vh;
+    }
+    
+    /* Mobile Server Navigation */
     .servers-sidebar {
         width: 100%;
-        height: auto;
+        height: 60px;
         flex-direction: row;
-        justify-content: space-around;
-        padding: 10px;
+        justify-content: flex-start;
+        padding: 8px 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-bottom: 1px solid #40444b;
+    }
+    
+    .server-list {
+        flex-direction: row;
+        gap: 12px;
+        min-width: max-content;
     }
     
     .server-item {
-        margin: 5px;
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        margin: 0;
     }
     
+    .server-separator {
+        display: none;
+    }
+    
+    .server-tooltip {
+        display: none;
+    }
+    
+    /* Main Content Area */
     .main-content {
+        flex: 1;
+        display: flex;
         flex-direction: column;
+        min-height: 0;
     }
     
+    /* Hide Channels Sidebar on Mobile */
+    .channels-sidebar {
+        display: none;
+    }
+    
+    /* Mobile Chat Area */
     .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         width: 100%;
         margin-right: 0;
-        margin-bottom: 20px;
+        margin-bottom: 0;
     }
     
-    .user-profile {
-        width: 100%;
+    .chat-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #40444b;
     }
     
+    .chat-title {
+        font-size: 16px;
+    }
+    
+    .status-text {
+        font-size: 12px;
+    }
+    
+    /* Mobile Messages */
+    .messages-container {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+    }
+    
+    .message {
+        margin-bottom: 16px;
+    }
+    
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .message-content {
+        margin-left: 12px;
+    }
+    
+    .message-header {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+    
+    .message-text {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    /* Mobile Input */
+    .message-input-container {
+        padding: 12px 16px;
+        border-top: 1px solid #40444b;
+    }
+    
+    .message-input-wrapper {
+        border-radius: 20px;
+    }
+    
+    #messageInput {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px 16px;
+    }
+    
+    #sendButton {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    /* Hide User Sidebar on Mobile */
+    .user-sidebar {
+        display: none;
+    }
+    
+    /* Mobile Legal Footer */
     .legal-footer {
-        padding: 15px;
+        padding: 16px;
         font-size: 11px;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .servers-sidebar {
+        height: 50px;
+        padding: 6px 8px;
+    }
+    
+    .server-item {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .server-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .chat-title {
+        font-size: 14px;
+    }
+    
+    .messages-container {
+        padding: 12px;
+    }
+    
+    .message-input-container {
+        padding: 10px 12px;
+    }
+    
+    #messageInput {
+        font-size: 16px;
+        padding: 10px 14px;
+    }
+}
+
+/* Mobile Server Pages */
+@media (max-width: 768px) {
+    .server-header {
+        padding: 12px 16px;
+    }
+    
+    .server-title {
+        font-size: 18px;
+    }
+    
+    .server-subtitle {
+        font-size: 12px;
+    }
+    
+    .channel-category {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    .channel-item {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .channel-item i {
+        font-size: 14px;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .server-item:hover {
+        transform: none;
+    }
+    
+    .server-item:active {
+        transform: scale(0.95);
+    }
+    
+    .message-input-wrapper:focus-within {
+        box-shadow: 0 0 0 2px #5865f2;
     }
 }
