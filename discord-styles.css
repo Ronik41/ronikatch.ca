@@ -1108,7 +1108,7 @@ body {
     }
     
     .mobile-user-profile.show {
-        display: block;
+        display: block !important;
     }
     
     .mobile-user-profile .user-profile {
@@ -1167,7 +1167,7 @@ body {
     
     /* Show mobile toggle button only on mobile */
     .mobile-user-toggle {
-        display: block;
+        display: block !important;
     }
     
     /* Mobile Legal Footer */
