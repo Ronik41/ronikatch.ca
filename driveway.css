@@ -40,3 +40,15 @@ dialog{border:0;color:var(--ink);background:#14201d;padding:0;max-height:90svh;o
 @media(max-width:700px){[data-page=game] .screen-heading{padding:12px 17px}[data-page=game] .screen-heading h2{margin-top:20px}[data-page=game] .screen-content{padding:15px 13px}.game-top h3{font-size:21px}.memory-card{aspect-ratio:1.25;min-height:49px}.charge-board,.route-board{max-width:270px}.charge-tile{font-size:19px}}
 #app{overflow:clip}.charge-board,.route-board{max-width:clamp(180px,calc(var(--focus-height) - 390px),240px)}
 @media(max-width:700px){.charge-board,.route-board{max-width:240px}}
+
+/* Small objects continue the journey in the driveway foreground. */
+.driveway-prop{position:absolute;z-index:2;padding:0;min-width:44px;min-height:44px;display:grid;place-items:center;transform:translate(-50%,-50%);outline-offset:3px;isolation:isolate}
+.driveway-prop img{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 5px #10162966);transition:filter .25s,transform .25s;pointer-events:none}
+.driveway-prop:hover img,.driveway-prop:focus-visible img{filter:brightness(1.22) drop-shadow(0 0 8px #ffe1ab88);transform:translateY(-3px)}
+.driveway-prop span{position:absolute;top:100%;left:50%;transform:translateX(-50%);white-space:nowrap;padding:6px 10px;border-radius:6px;background:#182840e8;color:#ffe8c5;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.driveway-prop:hover span,.driveway-prop:focus-visible span{opacity:1}
+.skateboard-prop{left:35%;top:85%;width:15%}.rover-prop{left:70%;top:84%;width:9%}
+.early-experience-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:30px;align-items:start}.early-experience-layout figure{margin:20px 0 0;position:sticky;top:0}.early-experience-layout .photo-open{width:100%;background:#111c2b;border-radius:10px}.early-experience-layout .photo-open img{display:block;width:100%;height:auto;max-height:440px;object-fit:contain}.early-experience-layout figcaption{font-size:13px;line-height:1.6;color:#b8c8be;margin-top:12px}.early-story{border-top:1px solid #ffffff18;padding-top:1px}.info-dialog .experience-role{color:#e0cba9;font-size:14px}.back-experiences{font-size:14px;border-bottom:1px solid #a7b9ad;padding:0 0 5px;margin-bottom:20px}.experience-row>span:first-child{min-width:115px;font-size:27px}.experience-row small{font-size:14px}
+@media(max-width:700px){.mobile-chapters{grid-template-columns:repeat(3,1fr);gap:0;padding-top:6px}.mobile-chapters button{padding:7px 2px;gap:4px}.mobile-chapters button:nth-child(n+4){grid-column:auto}.driveway-prop span{font-size:12px}.skateboard-prop{width:19%;top:86%}.rover-prop{width:12%;top:84%}.early-experience-layout{grid-template-columns:1fr;gap:10px}.early-experience-layout figure{position:static;grid-row:1;margin-top:5px}.early-experience-layout .photo-open img{max-height:260px}.experience-row>span:first-child{min-width:75px;font-size:20px}.experience-row small{font-size:13px}}
+
+.early-experience-layout .photo-open>span{color:#c7d6e8;font-size:13px}

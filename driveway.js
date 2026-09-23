@@ -1,4 +1,4 @@
-import { chapters, whoop } from './experience.mjs';
+import { chapters, whoop, drivewayExperiences, experienceOrder } from './experience.mjs';
 import { mountGame, gameNames } from './mini-games.mjs';
 import { screenMatrix, sceneLayout } from './scene-geometry.mjs';
 const app = document.querySelector('#app');
@@ -98,11 +98,12 @@ function openPhone(){
 
 function openInfo(type){
  const target=$('#info-content');
- if(type==='about')target.innerHTML=`<p class="eyebrow">THE PERSON BEHIND THE WHEEL</p><h2 id="info-title">Hi, I’m Roni.</h2><div class="about-layout"><div><p>I’m a Computer Engineering student at the University of Waterloo. I build things where software meets the real world.</p><p>From embedded systems at Ford to manufacturing test software at WHOOP and Tesla, I like understanding how things work—and making them work better.</p><p>Outside the co-op chapters, projects are where I follow an interesting question and see where it goes.</p></div><img class="about-photo" src="images/about-me.jpg" alt="Roni by the Toronto waterfront"></div><div class="info-links"><a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn</a><a href="mailto:rkatchar@uwaterloo.ca">Email me</a><a href="projects.html">Projects</a></div>`;
- else if(type==='experience')target.innerHTML=`<p class="eyebrow">A FEW STOPS ALONG THE WAY</p><h2 id="info-title">The journey so far.</h2>${[['ford','2024','Ford','Manufacturing Software'],['whoop','2025','WHOOP','Manufacturing Test Software'],['cybertruck','2025','Tesla','Software Engineering · Sparks'],['cybercab','2026','Tesla','Software Engineering · Palo Alto']].map(([key,year,name,role])=>`<button class="experience-row" data-experience="${key}"><span>${year}</span><span><strong>${name}</strong><small>${role}</small></span><span>↗</span></button>`).join('')}<div class="info-links"><a href="electrium-server.html">Electrium Mobility</a><a href="exceed-server.html">Exceed Robotics</a><a href="projects.html">Projects</a></div>`;
+ if(type==='about')target.innerHTML=`<p class="eyebrow">THE PERSON BEHIND THE WHEEL</p><h2 id="info-title">Hi, I’m Roni.</h2><div class="about-layout"><div><p>I’m a Computer Engineering student at the University of Waterloo. I build things where software meets the real world.</p><p>From embedded systems at Ford to manufacturing test software at WHOOP and Tesla, I like understanding how things work—and making them work better.</p></div><img class="about-photo" src="images/about-me.jpg" alt="Roni by the Toronto waterfront"></div><div class="info-links"><a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn</a><a href="mailto:rkatchar@uwaterloo.ca">Email me</a></div>`;
+ else if(drivewayExperiences[type]){const c=drivewayExperiences[type];target.innerHTML=`<button class="back-experiences" data-open="experience">All experience</button><p class="eyebrow">${c.company}</p><h2 id="info-title">${c.title}</h2><p class="experience-role">${c.role}<br>${c.dates} · ${c.location}</p><div class="early-experience-layout"><div><p>${c.description}</p>${c.work.map(([title,body])=>`<article class="early-story"><h3>${title}</h3><p>${body}</p></article>`).join('')}</div><figure>${photoButton(c.image,c.caption)}<figcaption>${c.caption}</figcaption></figure></div>`;}
+ else if(type==='experience')target.innerHTML=`<p class="eyebrow">A FEW STOPS ALONG THE WAY</p><h2 id="info-title">The journey so far.</h2>${experienceOrder.map(([key,year,name,role,dates])=>`<button class="experience-row" data-experience="${key}"><span>${year}</span><span><strong>${name}</strong><small>${role}</small><small>${dates}</small></span><span aria-hidden="true">↗</span></button>`).join('')}`;
  else target.innerHTML=`<p class="eyebrow">UPDATED RÉSUMÉ</p><h2 id="info-title">Roni Katcharovski</h2><p>Software engineering experience at Tesla, WHOOP, and Ford. Computer Engineering at the University of Waterloo, graduating April 2028.</p><div class="info-links"><a href="assets/resume/Roni_Katcharovski_Resume_Software_2027.pdf" target="_blank" rel="noreferrer">Open résumé PDF</a><a href="assets/resume/Roni_Katcharovski_Resume_Software_2027.pdf" download>Download PDF</a></div>`;
  target.insertAdjacentHTML('beforeend','<p class="brand-note">Personal portfolio. Company and product names identify my experience; this site is not endorsed by Ford, Lincoln, Tesla, or WHOOP.</p>');
- $('#info-dialog').showModal();
+ if(!$('#info-dialog').open)$('#info-dialog').showModal();$('#info-dialog').scrollTop=0;$('#info-title').tabIndex=-1;$('#info-title').focus({preventScroll:true});
 }
 document.addEventListener('click',e=>{
  const photo=e.target.closest('[data-photo]');if(photo){$('#full-photo').src=photo.dataset.photo;$('#full-photo').alt=photo.dataset.caption;$('#photo-caption').textContent=photo.dataset.caption;$('#photo-dialog').showModal()}
@@ -110,7 +111,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-screen-home]'))setPage('home',true);
  const enter=e.target.closest('[data-enter]');if(enter)enterCar(enter.dataset.enter);
  const info=e.target.closest('[data-open]');if(info)openInfo(info.dataset.open);
- const exp=e.target.closest('[data-experience]');if(exp){$('#info-dialog').close();if(exp.dataset.experience==='whoop'){if(activeChapter)openPhone();else enterCar('ford').then(ok=>{if(ok)openPhone()})}else enterCar(exp.dataset.experience)}
+ const exp=e.target.closest('[data-experience]');if(exp){$('#info-dialog').close();if(drivewayExperiences[exp.dataset.experience])openInfo(exp.dataset.experience);else if(exp.dataset.experience==='whoop'){if(activeChapter)openPhone();else enterCar('ford').then(ok=>{if(ok)openPhone()})}else enterCar(exp.dataset.experience)}
  if(e.target.closest('#print-resume'))window.print();
 });
 $('#exit-car').addEventListener('click',()=>exitCar());

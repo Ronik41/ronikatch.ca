@@ -12,7 +12,7 @@ The existing `npm run dev` / Vercel configuration and `api/` remain available fo
 
 ## Interaction
 
-Hover or keyboard-focus a vehicle to highlight its silhouette. Clicking enters its cabin; the screen stays off. Clicking the display zooms it into a reading view. Back to cabin or Escape turns it off again. Click the wristband for WHOOP. Browser history and #ford, #cybertruck, #cybercab, #whoop links are supported. Motion follows the device's reduced-motion preference.
+Hover or keyboard-focus a vehicle to highlight its silhouette. Clicking enters its cabin; the screen stays off. Clicking the display zooms it into a reading view. Back to cabin or Escape turns it off again. Click the wristband for WHOOP. A small electric skateboard and tracked rover in the foreground open Electrium Mobility and Exceed Robotics, respectively. All experience lists all six roles newest first; Projects is hidden from the active portfolio. Browser history and #ford, #cybertruck, #cybercab, #whoop links are supported. Motion follows the device's reduced-motion preference.
 
 On small screens the complete scene fits the viewport, with text chapter controls for touch access. The screen opens at nearly full viewport size. Persistent ambient glows identify the screen and wristband; hover and keyboard focus strengthen them.
 
