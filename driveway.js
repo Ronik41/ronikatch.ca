@@ -1,60 +1,51 @@
+import { chapters, whoop } from './experience.mjs';
+import { mountGame, gameNames } from './mini-games.mjs';
 import { screenMatrix, sceneLayout } from './scene-geometry.mjs';
 const app = document.querySelector('#app');
 const $ = (s) => document.querySelector(s);
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const chapters = {
- ford: { year:'2024', company:'Ford', vehicle:'Lincoln Nautilus', role:'Manufacturing Software', dates:'May — August 2024', location:'Waterloo, ON', image:'images/ford.jpeg', caption:'An early chapter at Ford.', title:'Making reliability a habit.', description:'On Ford’s Manufacturing Software team, I worked on embedded-systems validation, unit testing, and real-time telemetry control code. A first-hand lesson in building software that needs to work beyond the screen.', skills:['C++','Google Mock','Unit testing','Hardware-in-the-loop'], work:[['Testing the hard-to-test','Reverse-engineered a large codebase and delivered over 500 unit tests across vehicle models. Used Google Mock to simulate kernel system calls, asynchronous drivers, and external dependencies.'],['Software meets hardware','Refactored real-time telemetry control code with test-driven development. Validated production software with Radmoon, ValueCAN, and debug boards.']],metrics:[['500+','unit tests delivered'],['98%','line coverage'],['100%','functional test coverage']],photos:[['images/ford.jpeg','Outside the Ford office.']] },
- cybertruck: { year:'2025',company:'Tesla',vehicle:'Cybertruck',role:'Manufacturing Test & Engineering Software',dates:'Fall 2025',location:'Sparks, Nevada',image:'images/tesla-reno.jpeg',caption:'The people behind the engineering.',title:'Engineering at factory scale.',description:'At Tesla, I worked in Manufacturing Test and Engineering Software, building software around in-house test equipment and product validation. The work connects code, hardware, and the people who bring a product to life.',skills:['Python','Go','LabVIEW','Test equipment'],work:[['Software around real systems','Manufacturing test software connects to hardware devices, coordinates validation, and makes results useful to engineering teams. My work centered on in-house test equipment and product validation.'],['Learning across disciplines','Working alongside hardware and manufacturing engineers brought a practical perspective to software: clear interfaces, reliable behavior, and tools that make sense on the factory floor.']],metrics:[],photos:[['images/tesla-reno.jpeg','With the Tesla team in Reno.'],['images/tesla-california.jpeg','A snapshot from California.']] },
- cybercab: {year:'2026',company:'Tesla',vehicle:'Cybercab',role:'The next chapter',dates:'2026',location:'A story in progress',image:'images/tesla-california.jpeg',caption:'The journey continues.',title:'The road ahead.',description:'A new year, a new chapter. This space is reserved for my 2026 Tesla experience. The detailed projects and outcomes will be added when they’re ready to share.',skills:['Curiosity','Software + hardware','What comes next'],work:[['More to come','This chapter’s engineering stories are still to be added. In the meantime, explore my 2025 Tesla work or tap the WHOOP on my wrist.']],metrics:[],photos:[]}
-};
 let activeChapter = null;
-let activeTab = 'overview';
+let activePage = 'home';
+let disposeGame = ()=>{};
 let entryToken = 0;
 let finishEntry = null;
 let previousFocus = null;
 let screenTimer = 0;
 
 
-const tags = (items) => `<div class="skill-list">${items.map(x=>`<span>${x}</span>`).join('')}</div>`;
 const photoButton=(src,caption,hero=false)=>`<button class="photo-open ${hero?'hero-photo':''}" data-photo="${src}" data-caption="${caption}" aria-label="View full photo: ${caption}"><img src="${src}" alt="${caption}" loading="lazy"><span>View full photo</span></button>`;
 const photos = (items) => `<div class="photo-grid">${items.map(([src,caption])=>`<figure>${photoButton(src,caption)}<figcaption>${caption}</figcaption></figure>`).join('')}</div>`;
 const appIcon=(name)=>{
- const shapes={overview:'<rect x="5" y="4" width="18" height="20" rx="3"/><path d="M10 10h8M10 14h8M10 18h5"/>',projects:'<path d="m9 8-6 6 6 6m10-12 6 6-6 6m-3-15-4 18"/>',impact:'<path d="M5 23V14m9 9V5m9 18V10"/>',photos:'<rect x="3" y="4" width="22" height="20" rx="4"/><circle cx="10" cy="10" r="2"/><path d="m4 21 6-6 5 4 5-8 5 6"/>',whoop:'<path d="m3 7 5 15 6-12 6 12 5-15"/>',contact:'<rect x="3" y="6" width="22" height="17" rx="3"/><path d="m4 8 10 8 10-8"/>',home:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="17" y="4" width="7" height="7" rx="2"/><rect x="4" y="17" width="7" height="7" rx="2"/><rect x="17" y="17" width="7" height="7" rx="2"/>'};
+ const shapes={game:'<rect x="3" y="7" width="22" height="16" rx="6"/><path d="M7 14h6m-3-3v6m8-3h.1m3 3h.1"/>',overview:'<rect x="5" y="4" width="18" height="20" rx="3"/><path d="M10 10h8M10 14h8M10 18h5"/>',projects:'<path d="m9 8-6 6 6 6m10-12 6 6-6 6m-3-15-4 18"/>',impact:'<path d="M5 23V14m9 9V5m9 18V10"/>',photos:'<rect x="3" y="4" width="22" height="20" rx="4"/><circle cx="10" cy="10" r="2"/><path d="m4 21 6-6 5 4 5-8 5 6"/>',whoop:'<path d="m3 7 5 15 6-12 6 12 5-15"/>',contact:'<rect x="3" y="6" width="22" height="17" rx="3"/><path d="m4 8 10 8 10-8"/>',home:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="17" y="4" width="7" height="7" rx="2"/><rect x="4" y="17" width="7" height="7" rx="2"/><rect x="17" y="17" width="7" height="7" rx="2"/>'};
  return `<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.overview}</svg>`;
 };
-function launcher(c){return `<div class="launcher-heading"><p>Your co-op, connected.</p><h3>Choose an app.</h3></div><div class="app-grid">${[['overview','Overview'],['projects','The work'],['impact','Impact'],['photos','Photos'],['whoop','WHOOP'],['contact','Contact']].map(([key,label])=>`<button class="launch-app" data-launch="${key}"><span class="app-icon icon-${key}">${appIcon(key)}</span><span>${label}</span></button>`).join('')}</div><p class="launcher-caption">${c.dates} · ${c.location}</p>`}
-function markDiscovered(item){app.dataset[item+'Hint']='seen';try{sessionStorage.setItem('driveway-'+item,'seen')}catch{}}
-function showHints(){for(const item of ['screen','band']){let seen=false;try{seen=sessionStorage.getItem('driveway-'+item)==='seen'}catch{}app.dataset[item+'Hint']=seen?'seen':'new'}}
-function contentFor(c,tab) {
- if(tab==='home')return launcher(c);
- if(tab==='overview')return `<div class="role-meta"><span>${c.dates}</span><span>·</span><span>${c.location}</span></div>${photoButton(c.image,c.caption,true)}<h3>${c.title}</h3><p>${c.description}</p>${tags(c.skills)}`;
- if(tab==='projects')return c.work.map(([title,body])=>`<article class="story-block"><h3>${title}</h3><p>${body}</p></article>`).join('');
- if(tab==='impact')return c.metrics.length?`<div class="metric-grid">${c.metrics.map(([value,label])=>`<div class="metric"><strong>${value}</strong><span>${label}</span></div>`).join('')}</div><p>Building confidence in embedded software through systematic tests, simulated hardware interactions, and validation on real equipment.</p>`:`<h3>Lessons beyond the code.</h3><p>${c.year==='2026'?'Projects and outcomes for this chapter will be shared here.':'Factory-scale engineering made the relationship between software quality and real-world reliability tangible. It also deepened my appreciation for close collaboration across disciplines.'}</p>`;
- return c.photos.length?photos(c.photos):'<h3>A new view, soon.</h3><p>Photos from this chapter will join the story here.</p>';
+function launcher(c){return `<div class="launcher-heading"><p>${c.vehicle} · ${c.year}</p><h3>Make yourself at home.</h3></div><div class="app-grid">${[['overview','Overview'],['contact','Contact'],['game',gameNames[activeChapter]]].map(([key,label])=>`<button class="launch-app" data-launch="${key}"><span class="app-icon icon-${key}">${appIcon(key)}</span><span>${label}</span></button>`).join('')}</div><p class="launcher-caption">${c.dates} · ${c.location}</p>`}
+function contentFor(c,page){
+ if(page==='home')return launcher(c);
+ if(page==='contact')return `<div class="contact-app"><span class="contact-avatar">RK</span><h3>Roni Katcharovski</h3><p>Computer Engineering · University of Waterloo<br>Expected graduation: April 2028</p><div class="contact-actions"><a href="mailto:rkatchar@uwaterloo.ca">Email Roni<span>rkatchar@uwaterloo.ca</span></a><a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn<span>Let’s connect</span></a><a href="https://github.com/Ronik41" target="_blank" rel="noreferrer">GitHub<span>Explore my code</span></a><a href="assets/resume/Roni_Katcharovski_Resume_Software_2027.pdf" target="_blank" rel="noreferrer">Résumé<span>Software · 2027</span></a></div></div>`;
+ if(page==='game')return '<div id="mini-game" class="mini-game"></div>';
+ return `<div class="role-meta"><span>${c.dates}</span><span>·</span><span>${c.location}</span></div>${photoButton(c.image,c.caption,true)}<h3>${c.title}</h3><p>${c.description}</p><div class="overview-stories">${c.metrics.length?`<div class="metric-grid">${c.metrics.map(([value,label])=>`<div class="metric"><strong>${value}</strong><span>${label}</span></div>`).join('')}</div>`:''}${c.work.map(([title,body])=>`<article class="story-block"><h3>${title}</h3><p>${body}</p></article>`).join('')}</div>`;
 }
-function setTab(tab,focus=false){
- activeTab=tab;$('#infotainment').dataset.page=tab;
- document.querySelectorAll('[data-screen-app]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.screenApp===tab)));
- $('#screen-tabs').hidden=tab==='home';
- document.querySelectorAll('#screen-tabs button').forEach(b=>{const selected=b.dataset.tab===tab;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;if(selected&&focus)b.focus()});
- $('#screen-content').innerHTML=contentFor(chapters[activeChapter],tab);
- $('#screen-content').setAttribute('aria-labelledby',tab==='home'?'screen-title':`screen-tab-${tab}`);
- $('#screen-content').scrollTop=0;
+function setPage(page,focus=false){
+ if(!['home','overview','contact','game'].includes(page))return;
+ disposeGame();disposeGame=()=>{};activePage=page;$('#infotainment').dataset.page=page;
+ $('#screen-content').innerHTML=contentFor(chapters[activeChapter],page);$('#screen-content').scrollTop=0;
+ $('#screen-app-name').textContent=page==='home'?'Apps':page==='game'?gameNames[activeChapter]:page==='contact'?'Contact':'Overview';
+ if(page==='game')disposeGame=mountGame($('#mini-game'),activeChapter);
+ if(focus)(page==='game'?$('#mini-game .game-board'):$('#screen-content')).focus({preventScroll:true});
 }
 function populateCabin(key){
  const c=chapters[key];activeChapter=key;app.dataset.car=key;app.dataset.screen='off';
  $('#vehicle-label').textContent=`${c.vehicle} / ${c.year}`;
  $('#screen-brand').textContent=key==='ford'?'RONI’S PORTFOLIO · CONNECTED':'PARKED · RONI’S PORTFOLIO';
  $('#infotainment').dataset.system=key==='ford'?'carplay':'tesla';
- $('#vehicle-panel').innerHTML=key==='ford'?`<span class="dock-clock clock"></span><button data-screen-home aria-label="Portfolio home">${appIcon('home')}</button><button data-screen-app="overview" aria-label="Overview">${appIcon('overview')}</button><button data-screen-app="photos" aria-label="Photos">${appIcon('photos')}</button><button data-screen-phone aria-label="Explore WHOOP">${appIcon('whoop')}</button><span class="connected-label">CONNECTED</span>`:`<div class="park-status"><strong>P</strong><span>PORTFOLIO MODE</span></div><div class="vehicle-identity"><span>${c.vehicle}</span><strong>${c.year}</strong><p>${c.company}</p></div><div class="destination-card"><span>THIS CHAPTER</span><strong>${c.location}</strong><p>${c.dates}</p></div><button data-screen-phone class="tesla-whoop">${appIcon('whoop')}<span>WHOOP experience</span></button>`;
- showHints();updateClock();
+ $('#vehicle-panel').innerHTML=key==='ford'?`<span class="dock-clock clock"></span><button data-screen-home aria-label="Back to apps">${appIcon('home')}</button><span class="connected-label">CONNECTED</span>`:`<div class="park-status"><strong>P</strong><span>PORTFOLIO MODE</span></div><div class="vehicle-identity"><span>${c.vehicle}</span><strong>${c.year}</strong><p>${c.company}</p></div><div class="destination-card"><span>THIS CHAPTER</span><strong>${c.location}</strong><p>${c.dates}</p></div>`;
+ updateClock();
  $('#screen-kicker').textContent=c.role;
  $('#screen-title').textContent=`${c.company} / ${c.year}`;
  $('#cabin-image').src=`assets/scenes/${key}-stylized.webp`;
  $('#cabin-image').alt=`Stylized first-person view inside the ${c.vehicle}, with a WHOOP on the right wrist.`;
- const tabs=[['overview','Overview'],['projects','The work'],['impact','Impact'],['photos','Photos']];
- $('#screen-tabs').innerHTML=tabs.map(([id,label])=>`<button role="tab" id="screen-tab-${id}" data-tab="${id}" aria-selected="${id==='overview'}" aria-controls="screen-content" tabindex="${id==='overview'?0:-1}">${label}</button>`).join('');
- setTab(key==='ford'?'home':'overview');layoutScene();
+ setPage('home');layoutScene();
  $('#infotainment').hidden=true;$('#infotainment').classList.remove('focused');
  $('#screen-wake').hidden=false;$('#screen-wake').setAttribute('aria-label',`Turn on ${c.company} ${c.year} infotainment`);
 }
@@ -85,7 +76,7 @@ function exitCar({route=true}={}){
 }
 function wakeScreen(){
  if(!activeChapter||app.dataset.screen!=='off')return;
- markDiscovered('screen');
+ if(activePage==='game')setPage('game');
  clearTimeout(screenTimer);app.dataset.screen='waking';$('#infotainment').hidden=false;$('#screen-wake').hidden=true;
  $('#cabin-ui').inert=true;$('.site-header').inert=true;
  // Start from the physical display before moving to its comfortable reading size.
@@ -93,40 +84,32 @@ function wakeScreen(){
  requestAnimationFrame(()=>{if(app.dataset.screen!=='waking')return;$('#infotainment').classList.add('focused');app.dataset.screen='on';$('#announcer').textContent=chapters[activeChapter].company+' portfolio screen open.';$('#screen-title').focus({preventScroll:true})});
 }
 function closeScreen(animate=true){
+ disposeGame();disposeGame=()=>{};
  clearTimeout(screenTimer);const wasOn=app.dataset.screen!=='off';app.dataset.screen='off';$('#infotainment').classList.remove('focused');$('#cabin-ui').inert=false;$('.site-header').inert=false;$('#screen-wake').hidden=false;
  if(animate&&wasOn&&!reducedMotion.matches)screenTimer=setTimeout(()=>{$('#infotainment').hidden=true},500);else $('#infotainment').hidden=true;
  if(animate&&wasOn)$('#screen-wake').focus({preventScroll:true});
 }
 function routeFromHash(){const key=location.hash.slice(1);if(chapters[key]){if(key!==activeChapter)enterCar(key,{route:false,instant:true})}else if(key==='whoop'){if(!activeChapter)enterCar('ford',{route:false,instant:true}).then(ok=>{if(ok)openPhone()});else openPhone()}else if(activeChapter||finishEntry)exitCar({route:false})}
 
-function phoneContent(tab){
- if(tab==='home')return launcher(c);
- if(tab==='overview')return `<div class="recovery-ring"><strong>2025</strong><span>THE WHOOP CHAPTER</span></div><p class="phone-section-label">A TERM WITH REAL IMPACT</p><div class="phone-metrics"><div class="phone-metric"><strong>$100k+</strong><span>Manufacturing cost reduction</span></div><div class="phone-metric"><strong>80%</strong><span>Cycle time improvement</span></div></div><button class="phone-card" data-phone-go="work"><img src="images/whoop HQ.jpg" alt="" loading="lazy"><span><strong>Small device. Big systems.</strong><small>Explore the engineering</small></span></button><button class="phone-card" data-phone-go="photos"><img src="images/whoop ceo.jpg" alt="" loading="lazy"><span><strong>The people behind it.</strong><small>A few moments from Boston</small></span></button><p class="phone-copy">Test software, firmware, and the details that make a product ready for the real world.</p>`;
- if(tab==='work')return `<p class="phone-section-label">MANUFACTURING TEST SOFTWARE</p><article class="phone-story"><h3>A better test fixture.</h3><p>Migrated test-fixture hardware and redesigned its software, reducing costs by $2,000 per fixture across 50 units. Improved cycle time by 80% and yield by 2%.</p></article><article class="phone-story"><h3>Making every cycle count.</h3><p>Rewrote a UART parsing algorithm from O(n) to O(1), achieving a 2,000× serial communication speed increase. Used DMA with idle-line interrupts for real-time sensor collection.</p></article><article class="phone-story"><h3>Test the test system.</h3><p>Developed a virtual test environment with hardware simulation. Automated device-interaction logging and SQLite storage to accelerate firmware testing.</p></article><article class="phone-story"><h3>A term to remember.</h3><p>Earned a Co-op Student of the Year Award nomination.</p></article><p class="phone-copy">C / C++ · UART · DMA · SQLite · Hardware simulation</p>`;
- return `<div class="phone-photos"><figure>${photoButton("images/whoop ceo.jpg","Roni with WHOOP CEO Will Ahmed")}<figcaption>With Will Ahmed, CEO of WHOOP.</figcaption></figure><figure>${photoButton("images/whoop HQ.jpg","WHOOP headquarters in Boston")}<figcaption>Boston. A new team, a new perspective.</figcaption></figure></div>`;
+function openPhone(){
+ $('#phone-content').innerHTML=`<div class="recovery-ring"><strong>2025</strong><span>THE WHOOP CHAPTER</span></div><div class="phone-metrics"><div class="phone-metric"><strong>$100K+</strong><span>Build costs saved per product line</span></div><div class="phone-metric"><strong>HIL / SIL</strong><span>Hardware & software in the loop</span></div></div>${whoop.work.map(([title,body])=>`<article class="phone-story"><h3>${title}</h3><p>${body}</p></article>`).join('')}<div class="phone-photos"><figure>${photoButton('images/whoop ceo.jpg','With WHOOP CEO Will Ahmed.')}<figcaption>With Will Ahmed in Boston.</figcaption></figure><figure>${photoButton('images/whoop HQ.jpg','WHOOP headquarters in Boston.')}</figure></div>`;
+ $('.phone-body').scrollTop=0;if(!$('#phone-dialog').open)$('#phone-dialog').showModal();
 }
-function setPhoneTab(tab,focus=false){document.querySelectorAll('[data-phone-tab]').forEach(b=>{const selected=b.dataset.phoneTab===tab;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;if(selected&&focus)b.focus()});$('#phone-content').innerHTML=phoneContent(tab);$('#phone-content').setAttribute('aria-labelledby',`phone-tab-${tab}`);$('.phone-body').scrollTop=0}
-function openPhone(){markDiscovered('band');setPhoneTab('overview');if(!$('#phone-dialog').open)$('#phone-dialog').showModal()}
 
 function openInfo(type){
  const target=$('#info-content');
- if(type==='about')target.innerHTML=`<p class="eyebrow">THE PERSON BEHIND THE WHEEL</p><h2 id="info-title">Hi, I’m Roni.</h2><div class="about-layout"><div><p>I’m a Computer Engineering student at the University of Waterloo. I build things where software meets the real world.</p><p>From embedded systems at Ford to manufacturing test software at WHOOP and Tesla, I like understanding how things work—and making them work better.</p><p>Outside the co-op chapters, projects are where I follow an interesting question and see where it goes.</p></div><img class="about-photo" src="images/about-me.jpg" alt="Roni by the Toronto waterfront"></div><div class="info-links"><a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn</a><a href="mailto:roni.katch@gmail.com">Email me</a><a href="projects.html">Projects</a></div>`;
- else if(type==='experience')target.innerHTML=`<p class="eyebrow">A FEW STOPS ALONG THE WAY</p><h2 id="info-title">The journey so far.</h2>${[['ford','2024','Ford','Manufacturing Software'],['whoop','2025','WHOOP','Manufacturing Test Software'],['cybertruck','2025','Tesla','Manufacturing Test & Engineering Software'],['cybercab','2026','Tesla','The next chapter']].map(([key,year,name,role])=>`<button class="experience-row" data-experience="${key}"><span>${year}</span><span><strong>${name}</strong><small>${role}</small></span><span>↗</span></button>`).join('')}<div class="info-links"><a href="electrium-server.html">Electrium Mobility</a><a href="exceed-server.html">Exceed Robotics</a><a href="projects.html">Projects</a></div>`;
- else target.innerHTML=`<p class="eyebrow">EXPERIENCE AT A GLANCE</p><h2 id="info-title">Roni Katcharovski</h2><p>Computer Engineering · University of Waterloo · 2023–present<br><a href="mailto:roni.katch@gmail.com">roni.katch@gmail.com</a> · <a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn</a></p><div class="info-links"><button id="print-resume">Print / Save as PDF</button></div><section class="resume-section"><div class="resume-heading"><h3>Tesla</h3><p>Fall 2025 · Sparks, Nevada</p></div><p>Manufacturing Test & Engineering Software</p><ul><li>Software around in-house test equipment and product validation.</li><li>Engineering at the intersection of manufacturing, software, and hardware.</li></ul></section><section class="resume-section"><div class="resume-heading"><h3>WHOOP</h3><p>January–May 2025 · Boston, MA</p></div><p>Manufacturing Test Software</p><ul><li>Reduced manufacturing costs by $100,000+ through test-fixture hardware migration and system optimization.</li><li>Improved cycle time by 80% and yield by 2%.</li><li>Rewrote UART parsing from O(n) to O(1); developed hardware simulation and automated logging.</li></ul></section><section class="resume-section"><div class="resume-heading"><h3>Ford Motor Company</h3><p>May–August 2024 · Waterloo, ON</p></div><p>Manufacturing Software</p><ul><li>Delivered 500+ unit tests and achieved 98% line coverage for embedded-systems validation.</li><li>Simulated complex hardware interactions with Google Mock.</li><li>Refactored real-time telemetry code and performed hardware-in-the-loop testing.</li></ul></section><section class="resume-section"><h3>Tools & skills</h3><p>C / C++ · Python · Embedded systems · STM32 · UART / SPI / I2C · Hardware testing · SQLite</p></section>`;
+ if(type==='about')target.innerHTML=`<p class="eyebrow">THE PERSON BEHIND THE WHEEL</p><h2 id="info-title">Hi, I’m Roni.</h2><div class="about-layout"><div><p>I’m a Computer Engineering student at the University of Waterloo. I build things where software meets the real world.</p><p>From embedded systems at Ford to manufacturing test software at WHOOP and Tesla, I like understanding how things work—and making them work better.</p><p>Outside the co-op chapters, projects are where I follow an interesting question and see where it goes.</p></div><img class="about-photo" src="images/about-me.jpg" alt="Roni by the Toronto waterfront"></div><div class="info-links"><a href="https://linkedin.com/in/roni-katcharovski" target="_blank" rel="noreferrer">LinkedIn</a><a href="mailto:rkatchar@uwaterloo.ca">Email me</a><a href="projects.html">Projects</a></div>`;
+ else if(type==='experience')target.innerHTML=`<p class="eyebrow">A FEW STOPS ALONG THE WAY</p><h2 id="info-title">The journey so far.</h2>${[['ford','2024','Ford','Manufacturing Software'],['whoop','2025','WHOOP','Manufacturing Test Software'],['cybertruck','2025','Tesla','Software Engineering · Sparks'],['cybercab','2026','Tesla','Software Engineering · Palo Alto']].map(([key,year,name,role])=>`<button class="experience-row" data-experience="${key}"><span>${year}</span><span><strong>${name}</strong><small>${role}</small></span><span>↗</span></button>`).join('')}<div class="info-links"><a href="electrium-server.html">Electrium Mobility</a><a href="exceed-server.html">Exceed Robotics</a><a href="projects.html">Projects</a></div>`;
+ else target.innerHTML=`<p class="eyebrow">UPDATED RÉSUMÉ</p><h2 id="info-title">Roni Katcharovski</h2><p>Software engineering experience at Tesla, WHOOP, and Ford. Computer Engineering at the University of Waterloo, graduating April 2028.</p><div class="info-links"><a href="assets/resume/Roni_Katcharovski_Resume_Software_2027.pdf" target="_blank" rel="noreferrer">Open résumé PDF</a><a href="assets/resume/Roni_Katcharovski_Resume_Software_2027.pdf" download>Download PDF</a></div>`;
  target.insertAdjacentHTML('beforeend','<p class="brand-note">Personal portfolio. Company and product names identify my experience; this site is not endorsed by Ford, Lincoln, Tesla, or WHOOP.</p>');
  $('#info-dialog').showModal();
 }
 document.addEventListener('click',e=>{
  const photo=e.target.closest('[data-photo]');if(photo){$('#full-photo').src=photo.dataset.photo;$('#full-photo').alt=photo.dataset.caption;$('#photo-caption').textContent=photo.dataset.caption;$('#photo-dialog').showModal()}
- const launch=e.target.closest('[data-launch]');if(launch){const page=launch.dataset.launch;if(page==='whoop')openPhone();else if(page==='contact')openInfo('about');else {setTab(page);$('#screen-content').focus({preventScroll:true})}}
- if(e.target.closest('[data-screen-home]'))setTab(activeChapter==='ford'?'home':'overview');
- const screenApp=e.target.closest('[data-screen-app]');if(screenApp)setTab(screenApp.dataset.screenApp);
- if(e.target.closest('[data-screen-phone]'))openPhone();
+ const launch=e.target.closest('[data-launch]');if(launch)setPage(launch.dataset.launch,true);
+ if(e.target.closest('[data-screen-home]'))setPage('home',true);
  const enter=e.target.closest('[data-enter]');if(enter)enterCar(enter.dataset.enter);
  const info=e.target.closest('[data-open]');if(info)openInfo(info.dataset.open);
- const tab=e.target.closest('[data-tab]');if(tab)setTab(tab.dataset.tab);
- const phoneTab=e.target.closest('[data-phone-tab]');if(phoneTab)setPhoneTab(phoneTab.dataset.phoneTab);
- const phoneGo=e.target.closest('[data-phone-go]');if(phoneGo)setPhoneTab(phoneGo.dataset.phoneGo,true);
  const exp=e.target.closest('[data-experience]');if(exp){$('#info-dialog').close();if(exp.dataset.experience==='whoop'){if(activeChapter)openPhone();else enterCar('ford').then(ok=>{if(ok)openPhone()})}else enterCar(exp.dataset.experience)}
  if(e.target.closest('#print-resume'))window.print();
 });
@@ -142,12 +125,12 @@ $('.phone-home').addEventListener('click',()=>$('#phone-dialog').close());
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape'&&!document.querySelector('dialog[open]')){if(app.dataset.screen!=='off'){e.preventDefault();closeScreen()}else if(activeChapter||finishEntry)exitCar()}
  if(e.key==='Tab'&&app.dataset.screen==='on'&&!document.querySelector('dialog[open]')){
-  const controls=[...$('#infotainment').querySelectorAll('button:not([tabindex="-1"]),a,[tabindex="0"]')];
+  const controls=[...$('#infotainment').querySelectorAll('button:not([disabled]):not([tabindex="-1"]),a,[tabindex="0"]')].filter(el=>el.getClientRects().length);
   const first=controls[0],last=controls.at(-1);
   if(e.shiftKey&&(document.activeElement===first||document.activeElement===$('#screen-title'))){e.preventDefault();last.focus()}
   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
  }
- const tab=e.target.closest('[role=tab]');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=[...tab.parentElement.querySelectorAll('[role=tab]')];const i=tabs.indexOf(tab);const next=tabs[e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];if(next.dataset.tab)setTab(next.dataset.tab,true);else setPhoneTab(next.dataset.phoneTab,true);
+
 });
 let frame=0;app.addEventListener('pointermove',e=>{if(reducedMotion.matches||activeChapter||matchMedia('(pointer: coarse)').matches)return;cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{app.style.setProperty('--px',`${(e.clientX/innerWidth-.5)*-8}px`);app.style.setProperty('--py',`${(e.clientY/innerHeight-.5)*-5}px`)})});
 app.addEventListener('pointerleave',()=>{app.style.setProperty('--px','0px');app.style.setProperty('--py','0px')});

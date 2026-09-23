@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vercel dev",
     "build": "node scripts/build-static.mjs",
-    "test": "node --test scripts/scene-geometry.test.mjs",
+    "test": "node --test scripts/*.test.mjs",
     "preview": "python3 -m http.server 5173 --bind 127.0.0.1"
   },
   "dependencies": {
