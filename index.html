@@ -1,13 +1,43 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Roni Katcharovski — computer engineering student, builder, and lifelong tinkerer."><title>Roni's Corkboard</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gochi+Hand&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="corkboard.css"></head>
-<body><main class="board-shell"><header class="board-header"><a class="wordmark" href="#top" aria-label="Back to top">rk <span>notes</span></a><p class="header-note">a few things I care about,<br>arranged loosely</p><a class="contact-link" href="mailto:roni.katch@gmail.com">say hello <span>↗</span></a></header>
-<section class="corkboard" id="top" aria-label="Roni Katcharovski's story"><div class="board-grain" aria-hidden="true"></div><svg class="twine" viewBox="0 0 1200 920" preserveAspectRatio="none" aria-hidden="true"><path d="M103 188 C250 100 358 215 494 158 S714 54 785 218 S1004 298 1123 160"/><path d="M244 279 C132 402 289 500 431 437 S620 445 680 566 S869 696 1022 581"/><path d="M89 716 C225 611 357 741 499 685 S684 686 799 785 S1017 794 1120 718"/></svg>
-<article class="pin-card intro-card rotate-left" data-card="about" tabindex="0" role="button" aria-label="Read about Roni"><i class="pushpin red"></i><span class="eyebrow">01 / hello</span><h1>Hi, I’m<br><em>Roni.</em></h1><p>I build things where software meets the real world.</p><span class="card-cta">pull the pin <b>+</b></span></article>
-<article class="photo-card photo-profile tilt-right" data-card="about" tabindex="0" role="button" aria-label="Open portrait details"><i class="pushpin blue"></i><img src="images/about-me.jpg" alt="Roni Katcharovski by the Toronto waterfront"><span class="photo-caption">a builder, mostly caffeinated</span></article>
-<article class="sticky yellow rotate-right" data-card="waterloo" tabindex="0" role="button" aria-label="Read about Waterloo"><i class="pushpin yellow-pin"></i><span class="tiny-label">currently</span><h2>Computer Engineering<br>@ Waterloo</h2><p>Learning how everything under the hood fits together.</p><span class="scribble">2023 — now</span></article>
-<article class="polaroid whoop-photo rotate-left" data-card="whoop" tabindex="0" role="button" aria-label="Read about WHOOP"><i class="pushpin green"></i><img src="images/whoop HQ.jpg" alt="WHOOP headquarters"><p>WHOOP / a summer of shipping</p></article>
-<article class="note-card blue-note tilt-left" data-card="work" tabindex="0" role="button" aria-label="Read about work experience"><i class="pushpin blue"></i><span class="eyebrow">03 / the work</span><h2>Turning curious<br>questions into<br><em>real systems.</em></h2><span class="card-cta">see the trail <b>→</b></span></article>
-<article class="polaroid ceo-photo rotate-right" data-card="whoop" tabindex="0" role="button" aria-label="Read WHOOP story"><i class="pushpin red"></i><img src="images/whoop ceo.jpg" alt="Roni at WHOOP"><p>the people make it</p></article>
-<article class="sticky pink tilt-right" data-card="projects" tabindex="0" role="button" aria-label="Read about projects"><i class="pushpin red"></i><span class="tiny-label">after hours</span><h2>Make it,<br>break it,<br>make it better.</h2><p>Little projects are where I follow the rabbit holes.</p><span class="scribble">open the drawer →</span></article>
-<article class="photo-card banner-photo rotate-left" data-card="projects" tabindex="0" role="button" aria-label="Open project details"><i class="pushpin green"></i><img src="images/home page profile banner.jpg" alt="Roni working on a project"><span class="photo-caption">always one more thing to try</span></article><aside class="legend" aria-label="How to use this page"><span class="legend-pin"></span><span>follow the string<br>click a memory</span></aside></section><footer>© <span id="year"></span> Roni Katcharovski · made with care, curiosity &amp; a little too much tape</footer></main>
-<dialog class="story-modal" id="storyModal" aria-labelledby="modalTitle"><button class="close-modal" aria-label="Close story">×</button><div class="modal-tape"></div><p class="modal-kicker" id="modalKicker"></p><h2 id="modalTitle"></h2><div id="modalBody"></div><div class="modal-links" id="modalLinks"></div></dialog><script src="corkboard.js"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111919">
+  <meta name="description" content="Step inside Roni Katcharovski’s engineering journey. Explore Ford, Tesla, and WHOOP through an interactive driveway.">
+  <title>Roni Katcharovski — The Driveway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/scenes/driveway-stylized.webp" fetchpriority="high">
+  <link rel="stylesheet" href="driveway.css">
+  <script type="module" src="driveway.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#car-hotspots">Skip to experiences</a>
+  <main id="app" data-view="driveway" data-screen="off">
+    <div class="scene" id="driveway-scene"><div class="world" id="world"><img id="driveway-image" src="assets/scenes/driveway-stylized.webp" alt="A stylized driveway with a Lincoln Nautilus marked 2024, Cybertruck marked 2025, and Cybercab marked 2026" fetchpriority="high">
+      <div id="car-hotspots" class="car-hotspots" aria-label="Explore a vehicle">
+        <button class="vehicle-region" data-enter="ford" aria-label="Enter Lincoln Nautilus — Ford, 2024"></button>
+        <button class="vehicle-region" data-enter="cybertruck" aria-label="Enter Cybertruck — Tesla, 2025"></button>
+        <button class="vehicle-region" data-enter="cybercab" aria-label="Enter Cybercab — Tesla, 2026"></button>
+      </div>
+    </div></div>
+    <div class="scene cabin-scene" id="cabin-scene" aria-hidden="true"><img id="cabin-image" alt=""><div class="cabin-shade"></div></div>
+    <header class="site-header"><a class="identity" href="#" aria-label="Roni Katcharovski, return to driveway"><h1>Roni Katcharovski</h1><span>Computer Engineering / Waterloo</span></a><nav aria-label="Main navigation"><button data-open="about">About</button><button data-open="resume">Résumé</button><a href="mailto:roni.katch@gmail.com">Contact</a></nav></header>
+    <div class="driveway-bottom" id="driveway-bottom"><nav id="chapter-nav" class="mobile-chapters" aria-label="Choose a co-op"><button data-enter="ford">Ford <span>2024</span></button><button data-enter="cybertruck">Tesla <span>2025</span></button><button data-enter="cybercab">Tesla <span>2026</span></button></nav><footer class="scene-footer"><button data-open="experience">All experience</button><span>PERSONAL PORTFOLIO</span></footer></div>
+    <section id="cabin-ui" class="cabin-ui" aria-label="Vehicle interior" hidden>
+      <div class="cabin-toolbar"><button id="exit-car" class="pill-button">Back to driveway</button><p id="vehicle-label"></p><button id="next-car" class="pill-button">Next chapter</button></div>
+      <button id="screen-wake" class="screen-wake" aria-label="Turn on infotainment and explore this co-op"></button>
+      <button id="whoop-hotspot" class="whoop-hotspot" aria-label="Explore WHOOP co-op on phone"></button>
+      <p class="cabin-hint" id="cabin-hint">Touch the screen to explore.</p>
+    </section>
+    <section id="infotainment" class="infotainment" role="dialog" aria-modal="true" aria-labelledby="screen-title" hidden><div class="screen-status"><span id="screen-brand"></span><span class="clock">9:41</span></div><div class="screen-heading"><div><h2 id="screen-title" tabindex="-1"></h2><p id="screen-kicker"></p></div><button id="screen-back">Back to cabin</button></div><div class="screen-tabs" id="screen-tabs" role="tablist" aria-label="Experience sections"></div><div id="screen-content" class="screen-content" role="tabpanel" tabindex="0"></div><div class="screen-bottom"><span>Roni Katcharovski</span><span>Engineering journal</span></div></section>
+    <div id="transition" class="transition" aria-hidden="true"><span class="transition-line"></span><p id="transition-label"></p><button id="skip-animation" class="text-button" tabindex="-1">Skip animation</button></div>
+  </main>
+  <dialog id="phone-dialog" class="phone-dialog" aria-labelledby="phone-title"><button class="dialog-close phone-close" aria-label="Put phone away">×</button><div class="phone-shell"><div class="phone-status"><span class="clock">9:41</span><span class="phone-island" aria-hidden="true"></span><span aria-hidden="true">▮▮▮ ▰</span></div><div class="phone-body"><header class="phone-header"><div><p class="phone-date">BOSTON, MA · JAN — MAY 2025</p><h2 id="phone-title">WHOOP</h2></div><span class="profile-monogram">RK</span></header><p class="phone-role">Manufacturing Test Software</p><div class="phone-tabs" role="tablist" aria-label="WHOOP sections"><button role="tab" id="phone-tab-overview" data-phone-tab="overview" aria-selected="true" aria-controls="phone-content">Overview</button><button role="tab" id="phone-tab-work" data-phone-tab="work" aria-selected="false" aria-controls="phone-content" tabindex="-1">The work</button><button role="tab" id="phone-tab-photos" data-phone-tab="photos" aria-selected="false" aria-controls="phone-content" tabindex="-1">Photos</button></div><div id="phone-content" role="tabpanel" aria-labelledby="phone-tab-overview" tabindex="0"></div></div><button class="phone-home" aria-label="Put phone away"><span></span></button></div></dialog>
+  <dialog id="info-dialog" class="info-dialog" aria-labelledby="info-title"><button class="dialog-close" aria-label="Close details">×</button><div id="info-content"></div></dialog>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><div class="no-js">Explore Roni’s experience: <a href="ford-server.html">Ford</a> · <a href="tesla-server.html">Tesla</a> · <a href="whoop-server.html">WHOOP</a>. Enable JavaScript for the interactive driveway.</div></noscript>
+</body>
+</html>

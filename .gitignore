@@ -15,3 +15,6 @@ api-key.js
 # Temporary files
 *.tmp
 *.temp
+# Generated static output
+dist/
+node_modules/

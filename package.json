@@ -1,10 +1,13 @@
 {
   "name": "roni-portfolio",
   "version": "1.0.0",
-  "description": "Roni Katcharovski's Discord-themed portfolio with secure AI chatbot",
+  "description": "An interactive graphic driveway portfolio for Roni Katcharovski",
   "main": "index.html",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "build": "node scripts/build-static.mjs",
+    "test": "node --test scripts/scene-geometry.test.mjs",
+    "preview": "python3 -m http.server 5173 --bind 127.0.0.1"
   },
   "dependencies": {
     "node-fetch": "^2.6.7"
