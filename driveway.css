@@ -54,3 +54,5 @@ dialog{border:0;color:var(--ink);background:#14201d;padding:0;max-height:90svh;o
 .early-experience-layout .photo-open>span{color:#c7d6e8;font-size:13px}
 
 .personal-goals{margin-top:30px;padding-top:8px;border-top:1px solid #ffffff20}.personal-goals ul{list-style:none;padding:0;margin:16px 0 0}.personal-goals li{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid #ffffff10;font-size:15px;line-height:1.6}.personal-goals strong{font-weight:500;color:#ffe1ab}.personal-goals li span{color:#b8c8be}@media(max-width:700px){.personal-goals li{grid-template-columns:1fr;gap:2px}}
+
+.vehicle-caption{position:absolute;top:78%;transform:translateX(-50%);white-space:nowrap;padding:6px 10px;border-radius:6px;background:#182840e8;color:#ffe8c5;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:3}.caption-ford{left:21%}.caption-cybertruck{left:49%}.caption-cybercab{left:79%}.vehicle-region:hover+.vehicle-caption,.vehicle-region:focus-visible+.vehicle-caption{opacity:1}@media(max-width:700px){.vehicle-caption{font-size:12px;padding:5px 8px}}
