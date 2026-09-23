@@ -16,31 +16,45 @@ let screenTimer = 0;
 
 
 const tags = (items) => `<div class="skill-list">${items.map(x=>`<span>${x}</span>`).join('')}</div>`;
-const photos = (items) => `<div class="photo-grid">${items.map(([src,caption])=>`<figure><img src="${src}" alt="${caption}" loading="lazy"><figcaption>${caption}</figcaption></figure>`).join('')}</div>`;
+const photoButton=(src,caption,hero=false)=>`<button class="photo-open ${hero?'hero-photo':''}" data-photo="${src}" data-caption="${caption}" aria-label="View full photo: ${caption}"><img src="${src}" alt="${caption}" loading="lazy"><span>View full photo</span></button>`;
+const photos = (items) => `<div class="photo-grid">${items.map(([src,caption])=>`<figure>${photoButton(src,caption)}<figcaption>${caption}</figcaption></figure>`).join('')}</div>`;
+const appIcon=(name)=>{
+ const shapes={overview:'<rect x="5" y="4" width="18" height="20" rx="3"/><path d="M10 10h8M10 14h8M10 18h5"/>',projects:'<path d="m9 8-6 6 6 6m10-12 6 6-6 6m-3-15-4 18"/>',impact:'<path d="M5 23V14m9 9V5m9 18V10"/>',photos:'<rect x="3" y="4" width="22" height="20" rx="4"/><circle cx="10" cy="10" r="2"/><path d="m4 21 6-6 5 4 5-8 5 6"/>',whoop:'<path d="m3 7 5 15 6-12 6 12 5-15"/>',contact:'<rect x="3" y="6" width="22" height="17" rx="3"/><path d="m4 8 10 8 10-8"/>',home:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="17" y="4" width="7" height="7" rx="2"/><rect x="4" y="17" width="7" height="7" rx="2"/><rect x="17" y="17" width="7" height="7" rx="2"/>'};
+ return `<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.overview}</svg>`;
+};
+function launcher(c){return `<div class="launcher-heading"><p>Your co-op, connected.</p><h3>Choose an app.</h3></div><div class="app-grid">${[['overview','Overview'],['projects','The work'],['impact','Impact'],['photos','Photos'],['whoop','WHOOP'],['contact','Contact']].map(([key,label])=>`<button class="launch-app" data-launch="${key}"><span class="app-icon icon-${key}">${appIcon(key)}</span><span>${label}</span></button>`).join('')}</div><p class="launcher-caption">${c.dates} · ${c.location}</p>`}
+function markDiscovered(item){app.dataset[item+'Hint']='seen';try{sessionStorage.setItem('driveway-'+item,'seen')}catch{}}
+function showHints(){for(const item of ['screen','band']){let seen=false;try{seen=sessionStorage.getItem('driveway-'+item)==='seen'}catch{}app.dataset[item+'Hint']=seen?'seen':'new'}}
 function contentFor(c,tab) {
- if(tab==='overview')return `<div class="role-meta"><span>${c.dates}</span><span>·</span><span>${c.location}</span></div><img class="content-hero" src="${c.image}" alt="${c.caption}"><h3>${c.title}</h3><p>${c.description}</p>${tags(c.skills)}`;
+ if(tab==='home')return launcher(c);
+ if(tab==='overview')return `<div class="role-meta"><span>${c.dates}</span><span>·</span><span>${c.location}</span></div>${photoButton(c.image,c.caption,true)}<h3>${c.title}</h3><p>${c.description}</p>${tags(c.skills)}`;
  if(tab==='projects')return c.work.map(([title,body])=>`<article class="story-block"><h3>${title}</h3><p>${body}</p></article>`).join('');
  if(tab==='impact')return c.metrics.length?`<div class="metric-grid">${c.metrics.map(([value,label])=>`<div class="metric"><strong>${value}</strong><span>${label}</span></div>`).join('')}</div><p>Building confidence in embedded software through systematic tests, simulated hardware interactions, and validation on real equipment.</p>`:`<h3>Lessons beyond the code.</h3><p>${c.year==='2026'?'Projects and outcomes for this chapter will be shared here.':'Factory-scale engineering made the relationship between software quality and real-world reliability tangible. It also deepened my appreciation for close collaboration across disciplines.'}</p>`;
  return c.photos.length?photos(c.photos):'<h3>A new view, soon.</h3><p>Photos from this chapter will join the story here.</p>';
 }
 function setTab(tab,focus=false){
- activeTab=tab;
+ activeTab=tab;$('#infotainment').dataset.page=tab;
+ document.querySelectorAll('[data-screen-app]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.screenApp===tab)));
+ $('#screen-tabs').hidden=tab==='home';
  document.querySelectorAll('#screen-tabs button').forEach(b=>{const selected=b.dataset.tab===tab;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;if(selected&&focus)b.focus()});
  $('#screen-content').innerHTML=contentFor(chapters[activeChapter],tab);
- $('#screen-content').setAttribute('aria-labelledby',`screen-tab-${tab}`);
+ $('#screen-content').setAttribute('aria-labelledby',tab==='home'?'screen-title':`screen-tab-${tab}`);
  $('#screen-content').scrollTop=0;
 }
 function populateCabin(key){
  const c=chapters[key];activeChapter=key;app.dataset.car=key;app.dataset.screen='off';
  $('#vehicle-label').textContent=`${c.vehicle} / ${c.year}`;
- $('#screen-brand').textContent='CO-OP JOURNAL';
+ $('#screen-brand').textContent=key==='ford'?'RONI’S PORTFOLIO · CONNECTED':'PARKED · RONI’S PORTFOLIO';
+ $('#infotainment').dataset.system=key==='ford'?'carplay':'tesla';
+ $('#vehicle-panel').innerHTML=key==='ford'?`<span class="dock-clock clock"></span><button data-screen-home aria-label="Portfolio home">${appIcon('home')}</button><button data-screen-app="overview" aria-label="Overview">${appIcon('overview')}</button><button data-screen-app="photos" aria-label="Photos">${appIcon('photos')}</button><button data-screen-phone aria-label="Explore WHOOP">${appIcon('whoop')}</button><span class="connected-label">CONNECTED</span>`:`<div class="park-status"><strong>P</strong><span>PORTFOLIO MODE</span></div><div class="vehicle-identity"><span>${c.vehicle}</span><strong>${c.year}</strong><p>${c.company}</p></div><div class="destination-card"><span>THIS CHAPTER</span><strong>${c.location}</strong><p>${c.dates}</p></div><button data-screen-phone class="tesla-whoop">${appIcon('whoop')}<span>WHOOP experience</span></button>`;
+ showHints();updateClock();
  $('#screen-kicker').textContent=c.role;
  $('#screen-title').textContent=`${c.company} / ${c.year}`;
  $('#cabin-image').src=`assets/scenes/${key}-stylized.webp`;
  $('#cabin-image').alt=`Stylized first-person view inside the ${c.vehicle}, with a WHOOP on the right wrist.`;
- const tabs=key==='cybercab'?[['overview','Overview'],['projects','The story']]:[['overview','Overview'],['projects','The work'],['impact','Impact'],['photos','Photos']];
+ const tabs=[['overview','Overview'],['projects','The work'],['impact','Impact'],['photos','Photos']];
  $('#screen-tabs').innerHTML=tabs.map(([id,label])=>`<button role="tab" id="screen-tab-${id}" data-tab="${id}" aria-selected="${id==='overview'}" aria-controls="screen-content" tabindex="${id==='overview'?0:-1}">${label}</button>`).join('');
- setTab('overview');layoutScene();
+ setTab(key==='ford'?'home':'overview');layoutScene();
  $('#infotainment').hidden=true;$('#infotainment').classList.remove('focused');
  $('#screen-wake').hidden=false;$('#screen-wake').setAttribute('aria-label',`Turn on ${c.company} ${c.year} infotainment`);
 }
@@ -71,11 +85,12 @@ function exitCar({route=true}={}){
 }
 function wakeScreen(){
  if(!activeChapter||app.dataset.screen!=='off')return;
+ markDiscovered('screen');
  clearTimeout(screenTimer);app.dataset.screen='waking';$('#infotainment').hidden=false;$('#screen-wake').hidden=true;
  $('#cabin-ui').inert=true;$('.site-header').inert=true;
  // Start from the physical display before moving to its comfortable reading size.
  void $('#infotainment').offsetWidth;
- requestAnimationFrame(()=>{if(app.dataset.screen!=='waking')return;$('#infotainment').classList.add('focused');app.dataset.screen='on';$('#screen-title').focus({preventScroll:true})});
+ requestAnimationFrame(()=>{if(app.dataset.screen!=='waking')return;$('#infotainment').classList.add('focused');app.dataset.screen='on';$('#announcer').textContent=chapters[activeChapter].company+' portfolio screen open.';$('#screen-title').focus({preventScroll:true})});
 }
 function closeScreen(animate=true){
  clearTimeout(screenTimer);const wasOn=app.dataset.screen!=='off';app.dataset.screen='off';$('#infotainment').classList.remove('focused');$('#cabin-ui').inert=false;$('.site-header').inert=false;$('#screen-wake').hidden=false;
@@ -85,12 +100,13 @@ function closeScreen(animate=true){
 function routeFromHash(){const key=location.hash.slice(1);if(chapters[key]){if(key!==activeChapter)enterCar(key,{route:false,instant:true})}else if(key==='whoop'){if(!activeChapter)enterCar('ford',{route:false,instant:true}).then(ok=>{if(ok)openPhone()});else openPhone()}else if(activeChapter||finishEntry)exitCar({route:false})}
 
 function phoneContent(tab){
+ if(tab==='home')return launcher(c);
  if(tab==='overview')return `<div class="recovery-ring"><strong>2025</strong><span>THE WHOOP CHAPTER</span></div><p class="phone-section-label">A TERM WITH REAL IMPACT</p><div class="phone-metrics"><div class="phone-metric"><strong>$100k+</strong><span>Manufacturing cost reduction</span></div><div class="phone-metric"><strong>80%</strong><span>Cycle time improvement</span></div></div><button class="phone-card" data-phone-go="work"><img src="images/whoop HQ.jpg" alt="" loading="lazy"><span><strong>Small device. Big systems.</strong><small>Explore the engineering</small></span></button><button class="phone-card" data-phone-go="photos"><img src="images/whoop ceo.jpg" alt="" loading="lazy"><span><strong>The people behind it.</strong><small>A few moments from Boston</small></span></button><p class="phone-copy">Test software, firmware, and the details that make a product ready for the real world.</p>`;
  if(tab==='work')return `<p class="phone-section-label">MANUFACTURING TEST SOFTWARE</p><article class="phone-story"><h3>A better test fixture.</h3><p>Migrated test-fixture hardware and redesigned its software, reducing costs by $2,000 per fixture across 50 units. Improved cycle time by 80% and yield by 2%.</p></article><article class="phone-story"><h3>Making every cycle count.</h3><p>Rewrote a UART parsing algorithm from O(n) to O(1), achieving a 2,000× serial communication speed increase. Used DMA with idle-line interrupts for real-time sensor collection.</p></article><article class="phone-story"><h3>Test the test system.</h3><p>Developed a virtual test environment with hardware simulation. Automated device-interaction logging and SQLite storage to accelerate firmware testing.</p></article><article class="phone-story"><h3>A term to remember.</h3><p>Earned a Co-op Student of the Year Award nomination.</p></article><p class="phone-copy">C / C++ · UART · DMA · SQLite · Hardware simulation</p>`;
- return `<div class="phone-photos"><figure><img src="images/whoop ceo.jpg" alt="Roni with WHOOP CEO Will Ahmed" loading="lazy"><figcaption>With Will Ahmed, CEO of WHOOP.</figcaption></figure><figure><img src="images/whoop HQ.jpg" alt="WHOOP headquarters in Boston" loading="lazy"><figcaption>Boston. A new team, a new perspective.</figcaption></figure></div>`;
+ return `<div class="phone-photos"><figure>${photoButton("images/whoop ceo.jpg","Roni with WHOOP CEO Will Ahmed")}<figcaption>With Will Ahmed, CEO of WHOOP.</figcaption></figure><figure>${photoButton("images/whoop HQ.jpg","WHOOP headquarters in Boston")}<figcaption>Boston. A new team, a new perspective.</figcaption></figure></div>`;
 }
 function setPhoneTab(tab,focus=false){document.querySelectorAll('[data-phone-tab]').forEach(b=>{const selected=b.dataset.phoneTab===tab;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;if(selected&&focus)b.focus()});$('#phone-content').innerHTML=phoneContent(tab);$('#phone-content').setAttribute('aria-labelledby',`phone-tab-${tab}`);$('.phone-body').scrollTop=0}
-function openPhone(){setPhoneTab('overview');if(!$('#phone-dialog').open)$('#phone-dialog').showModal()}
+function openPhone(){markDiscovered('band');setPhoneTab('overview');if(!$('#phone-dialog').open)$('#phone-dialog').showModal()}
 
 function openInfo(type){
  const target=$('#info-content');
@@ -101,6 +117,11 @@ function openInfo(type){
  $('#info-dialog').showModal();
 }
 document.addEventListener('click',e=>{
+ const photo=e.target.closest('[data-photo]');if(photo){$('#full-photo').src=photo.dataset.photo;$('#full-photo').alt=photo.dataset.caption;$('#photo-caption').textContent=photo.dataset.caption;$('#photo-dialog').showModal()}
+ const launch=e.target.closest('[data-launch]');if(launch){const page=launch.dataset.launch;if(page==='whoop')openPhone();else if(page==='contact')openInfo('about');else {setTab(page);$('#screen-content').focus({preventScroll:true})}}
+ if(e.target.closest('[data-screen-home]'))setTab(activeChapter==='ford'?'home':'overview');
+ const screenApp=e.target.closest('[data-screen-app]');if(screenApp)setTab(screenApp.dataset.screenApp);
+ if(e.target.closest('[data-screen-phone]'))openPhone();
  const enter=e.target.closest('[data-enter]');if(enter)enterCar(enter.dataset.enter);
  const info=e.target.closest('[data-open]');if(info)openInfo(info.dataset.open);
  const tab=e.target.closest('[data-tab]');if(tab)setTab(tab.dataset.tab);
