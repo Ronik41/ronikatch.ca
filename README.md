@@ -1,89 +1,66 @@
-# Roni Katcharovski's Portfolio
+# Roni Katcharovski — Interactive Driveway Portfolio
 
-A Discord-themed portfolio website with a secure AI chatbot powered by Google Gemini.
+[**Visit the live portfolio →**](https://ronikatch.ca)
 
-## 🚀 Features
+An interactive, framework-free engineering portfolio that turns a driveway into a timeline of co-op experiences. Visitors enter a vehicle or interact with an object to explore the work behind each chapter instead of reading a conventional project list.
 
-- **Discord-themed UI** - Mimics Discord's interface design
-- **AI Chatbot** - Powered by Google Gemini with secure server-side API
-- **Company Servers** - Detailed experience pages for Tesla, WHOOP, Ford, Electrium, and Exceed Robotics
-- **Responsive Design** - Works on desktop and mobile
-- **Secure API** - API key protected with Vercel serverless functions
+## Why this project
 
-## 🔒 Security
+I wanted the portfolio itself to demonstrate product thinking: establish a memorable metaphor, make the interaction discoverable, and retain a clear, accessible path through the content. The driveway represents a progression through experiences; vehicles correspond to Ford and Tesla chapters, while foreground objects lead to Electrium Mobility and Exceed Robotics.
 
-- **Server-side API key** - Never exposed to client-side code
-- **Rate limiting** - Prevents API abuse
-- **CORS protection** - Secure cross-origin requests
-- **Input validation** - Prevents harmful content
+The experience supports mouse, touch, keyboard navigation, browser history, deep links, and reduced-motion preferences. The interface uses image-backed 2.5D scenes with perspective-mapped controls rather than a full 3D engine, keeping it fast to load and easy to maintain.
 
-## 🛠️ Deployment
+## Demo
 
-### Option 1: Vercel (Recommended for AI features)
+[Watch the 39-second portfolio walkthrough](assets/demo/roni-driveway-demo-v3.mp4). It shows the Cybercab chapter, returns to the driveway before each new interaction, and covers Ford, WHOOP, Electrium, Exceed, and About.
 
-1. **Deploy to Vercel:**
-   ```bash
-   npm install -g vercel
-   vercel login
-   vercel --prod
-   ```
+## Highlights
 
-2. **Set Environment Variable:**
-   - Go to Vercel Dashboard → Project Settings → Environment Variables
-   - Add: `GEMINI_API_KEY` = `your-api-key-here`
+- **Interactive journey:** vehicle hotspots, cabin transitions, and focused experience views replace a static résumé page.
+- **Accessible by design:** keyboard-operable controls, focus management, Escape/back navigation, semantic labels, and reduced-motion support.
+- **Performance-conscious assets:** optimized, stylized scene art is loaded on demand; only the first cabin is preloaded after the landing scene.
+- **No framework required:** native ES modules, HTML, and CSS keep the production site small and inspectable.
+- **Tested interaction logic:** Node tests cover the scene projection helpers and mini-game rules.
 
-3. **Update API Endpoint:**
-   - Update `apiEndpoint` in `discord-app-ai.js` with your Vercel URL
+## Experience chapters
 
-### Option 2: GitHub Pages (Static only)
+| Chapter | Theme |
+| --- | --- |
+| Ford · 2024 | Software engineering co-op experience |
+| Tesla · 2025 | Software engineering co-op experience |
+| Tesla / Cybercab · 2026 | Manufacturing software and developer-tooling work |
+| Electrium Mobility | Electric-mobility work |
+| Exceed Robotics | Robotics work |
 
-1. **Push to GitHub:**
-   ```bash
-   git add .
-   git commit -m "Deploy portfolio"
-   git push origin main
-   ```
+## Run locally
 
-2. **Enable GitHub Pages:**
-   - Go to Repository Settings → Pages
-   - Select source branch: `main`
-   - Set custom domain: `ronikatch.ca`
-
-## 📁 Project Structure
-
-```
-├── api/
-│   └── chat.js              # Secure serverless function
-├── images/                  # Profile pictures and banners
-├── logos/                   # Company logos
-├── discord-portfolio.html   # Main homepage
-├── *-server.html           # Company experience pages
-├── discord-styles.css      # Discord-themed styling
-├── discord-app-ai.js       # Frontend chatbot logic
-├── vercel.json             # Vercel configuration
-└── package.json            # Dependencies
+```bash
+npm test
+npm run build
+npm run preview
 ```
 
-## 🔧 Development
+Open [http://127.0.0.1:5173](http://127.0.0.1:5173). `npm run build` produces the deployable static site in `dist/`.
 
-1. **Local Development:**
-   ```bash
-   # For static site
-   python -m http.server 8000
-   
-   # For Vercel with API
-   vercel dev
-   ```
+## Project structure
 
-2. **Environment Variables:**
-   - Create `.env.local` with `GEMINI_API_KEY=your-key`
+```text
+├── index.html              # Landing scene and accessible application structure
+├── driveway.css            # Responsive driveway, cabin, and interaction styling
+├── driveway.js             # Navigation, transitions, dialogs, and focus handling
+├── experience.mjs          # Experience content and chapter metadata
+├── mini-games.mjs          # Small interactive experiences
+├── scene-geometry.mjs      # Screen and wearable interaction geometry
+├── assets/                 # Optimized scene art, props, and résumé
+└── scripts/                # Static build and Node test utilities
+```
 
-## 📞 Contact
+## Deployment
 
-- **Email:** roni.katch@gmail.com
-- **LinkedIn:** linkedin.com/in/roni-katcharovski
-- **Website:** ronikatch.ca
+The portfolio is deployed as a static Vercel site and served at [ronikatch.ca](https://ronikatch.ca).
 
-## ⚖️ Legal
+## Contact
 
-This is a personal portfolio website created as a parody/tribute to Discord's interface design. This website is not affiliated with, endorsed by, or connected to Discord Inc. in any way.
+- [Portfolio](https://ronikatch.ca)
+- [LinkedIn](https://www.linkedin.com/in/roni-katcharovski/)
+- [Email](mailto:rkatchar@uwaterloo.ca)

@@ -19,5 +19,5 @@ async function copyAssets(relative) {
     }
   }
 }
-for(const directory of ['assets','images','logos'])await copyAssets(directory);
-console.log('Static portfolio built in dist. Existing Vercel API source remains in api/.');
+await copyAssets('assets');
+console.log('Static portfolio built in dist.');

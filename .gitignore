@@ -17,4 +17,5 @@ api-key.js
 *.temp
 # Generated static output
 dist/
+output/
 node_modules/

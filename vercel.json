@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/chat.js": {
-      "maxDuration": 30
-    }
-  },
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "dist"

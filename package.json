@@ -1,5 +1,5 @@
 {
-  "name": "roni-portfolio",
+  "name": "ronikatch-ca",
   "version": "1.0.0",
   "description": "An interactive graphic driveway portfolio for Roni Katcharovski",
   "main": "index.html",
@@ -8,9 +8,6 @@
     "build": "node scripts/build-static.mjs",
     "test": "node --test scripts/*.test.mjs",
     "preview": "python3 -m http.server 5173 --bind 127.0.0.1"
-  },
-  "dependencies": {
-    "node-fetch": "^2.6.7"
   },
   "engines": {
     "node": ">=18.0.0"
