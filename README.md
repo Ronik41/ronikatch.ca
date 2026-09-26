@@ -2,7 +2,7 @@
 
 [**Visit the live portfolio →**](https://ronikatch.ca)
 
-An interactive, framework-free engineering portfolio that turns a driveway into a timeline of co-op experiences. Visitors enter a vehicle or interact with an object to explore the work behind each chapter instead of reading a conventional project list.
+An interactive, framework-free engineering portfolio that turns a driveway into a timeline of co-op experiences. Visitors can open the latest work in one click, follow a guided timeline through all six roles, or jump directly to an employer. A stylized WHOOP band with rounded surfaces and a full 3D rotation joins the skateboard and robot in the driveway, with approach and return animations for each object. On mobile, a six-stop swipeable driveway leads into full-screen experience views with direct role selection and next/back controls.
 
 ## Why this project
 
@@ -16,9 +16,10 @@ The experience supports mouse, touch, keyboard navigation, browser history, deep
 
 ## Highlights
 
-- **Interactive journey:** vehicle hotspots, cabin transitions, and focused experience views replace a static résumé page.
+- **Guided journey:** each stop opens its work immediately, with previous/next controls and a persistent timeline. Clicking a vehicle enters its cabin without opening the reading view. Cabin screens show a concise role preview; clicking the screen opens the full work. Vehicle changes animate back through the driveway and into the selected car, with Skip and reduced-motion support. Cabin exploration is optional. The dashboard uses vehicle illustrations and a destination list; personal photos and games are not shown in the work views. Electrium and Exceed retain their project photos.
+- **Mobile journey:** choose a vehicle in the driveway, open its work full-screen, and move through every role with persistent navigation.
 - **Accessible by design:** keyboard-operable controls, focus management, Escape/back navigation, semantic labels, and reduced-motion support.
-- **Performance-conscious assets:** optimized, stylized scene art is loaded on demand; only the first cabin is preloaded after the landing scene.
+- **Performance-conscious assets:** optimized, stylized scene art is loaded on demand; cabin scenes load when their experience is opened.
 - **No framework required:** native ES modules, HTML, and CSS keep the production site small and inspectable.
 - **Tested interaction logic:** Node tests cover the scene projection helpers and mini-game rules.
 
@@ -29,6 +30,7 @@ The experience supports mouse, touch, keyboard navigation, browser history, deep
 | Ford · 2024 | Software engineering co-op experience |
 | Tesla · 2025 | Software engineering co-op experience |
 | Tesla / Cybercab · 2026 | Manufacturing software and developer-tooling work |
+| WHOOP · 2025 | Manufacturing testers and hardware simulation |
 | Electrium Mobility | Electric-mobility work |
 | Exceed Robotics | Robotics work |
 
@@ -49,6 +51,9 @@ Open [http://127.0.0.1:5173](http://127.0.0.1:5173). `npm run build` produces th
 ├── driveway.css            # Responsive driveway, cabin, and interaction styling
 ├── driveway.js             # Navigation, transitions, dialogs, and focus handling
 ├── experience.mjs          # Experience content and chapter metadata
+├── journey.mjs             # Shared ordering and content for all six roles
+├── journey.css             # Guided navigation and mobile reading layouts
+├── images/                 # Personal experience photos and portrait
 ├── mini-games.mjs          # Small interactive experiences
 ├── scene-geometry.mjs      # Screen and wearable interaction geometry
 ├── assets/                 # Optimized scene art, props, and résumé

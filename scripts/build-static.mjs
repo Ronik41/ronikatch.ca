@@ -20,4 +20,5 @@ async function copyAssets(relative) {
   }
 }
 await copyAssets('assets');
+await copyAssets('images');
 console.log('Static portfolio built in dist.');

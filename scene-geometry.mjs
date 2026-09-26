@@ -25,3 +25,10 @@ export const sceneLayout = {
  cybertruck: {size:[1672,941], corners:[[.472,.410],[.930,.410],[.941,.755],[.471,.755]], wrist:[.442,.792]},
  cybercab: {size:[1672,941], corners:[[.337,.337],[.662,.337],[.670,.542],[.330,.542]], wrist:[.685,.812]}
 };
+
+// Foreground contours in original artwork pixels. Reusing the cabin image above
+// the projected display preserves the hand occlusion without altering the art.
+export const cabinForeground = {
+ ford: [[640,450],[820,450],[820,522],[836,539],[840,557],[851,569],[853,584],[860,607],[856,640],[852,663],[847,684],[871,726],[931,842],[1015,941],[640,941]],
+ cybertruck: [[580,520],[770,520],[770,580],[778,588],[782,610],[793,621],[796,638],[795,647],[799,663],[792,708],[788,725],[840,830],[1000,941],[580,941]],
+};
