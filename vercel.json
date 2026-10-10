@@ -2,5 +2,6 @@
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/life-story", "destination": "/life-story.html" }]
+  "redirects": [{ "source": "/life-story", "destination": "/career-story", "permanent": true }],
+  "rewrites": [{ "source": "/career-story", "destination": "/life-story.html" }]
 }
