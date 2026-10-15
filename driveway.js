@@ -1,14 +1,13 @@
 import { mountWhoopDisplay } from './whoop-display.mjs';
 import { chapters } from './experience.mjs';
 import { journey, experiences, adjacentExperience, experienceLabel } from './journey.mjs';
-import { screenMatrix, sceneLayout, cabinForeground } from './scene-geometry.mjs';
+import { screenMatrix, sceneLayout, cabinForeground, sceneOrigins, mobileStops } from './scene-geometry.mjs';
 
 const $ = selector => document.querySelector(selector);
 const app = $('#app');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const mobile = matchMedia('(max-width: 700px), (max-width: 950px) and (max-height: 500px)');
-const mobileStops = ['cybercab', 'cybertruck', 'ford', 'whoop', 'electrium', 'exceed'];
-let mobileCarIndex = 0;
+let mobileCarIndex = mobileStops.indexOf('cybercab');
 let activeExperience = null;
 let activeChapter = null;
 let activeProp = null;
@@ -104,7 +103,6 @@ function updateHash(key, read = true) {
 // Keep animation ownership explicit so Escape, history, resize, and Skip can
 // cancel a journey without a delayed callback reopening the previous vehicle.
 const travelAnimations = new Set();
-const sceneOrigins = { ford: '21% 64%', cybertruck: '49% 64%', cybercab: '79% 65%', whoop: '52.5% 86%', electrium: '35% 85%', exceed: '70% 84%' };
 const propNames = { whoop: 'WHOOP display', electrium: 'electric skateboard', exceed: 'robot' };
 function sceneCamera(key, scale) {
   const [x, y] = sceneOrigins[key].split(' ').map(value => parseFloat(value) / 100);
