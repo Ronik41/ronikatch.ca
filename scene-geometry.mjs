@@ -1,6 +1,6 @@
 export const sceneOrigins = { ford: '21% 64%', cybertruck: '49% 64%', cybercab: '79% 65%', whoop: '52.5% 86%', electrium: '35% 85%', exceed: '70% 84%' };
-// Directional navigation follows the artwork, independently of career chronology.
-export const mobileStops = Object.keys(sceneOrigins).sort((a, b) => parseFloat(sceneOrigins[a]) - parseFloat(sceneOrigins[b]));
+// The mobile garage moves through cars by year; other roles live in All experiences.
+export const mobileStops = ['ford', 'cybertruck', 'cybercab'];
 
 /** object-fit: cover coordinates shared by scene artwork and interactive overlays. */
 export function coverPoint(point, viewport, image, position = [0.5, 0.5]) {

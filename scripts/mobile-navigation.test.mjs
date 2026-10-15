@@ -1,14 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mobileStops, sceneOrigins } from '../scene-geometry.mjs';
+import { mobileStops } from '../scene-geometry.mjs';
 
-test('mobile arrows and swipes traverse the driveway from left to right', () => {
-  assert.equal(new Set(mobileStops).size, 6);
-  assert.equal(mobileStops[0], 'ford');
-  assert.equal(mobileStops.at(-1), 'cybercab');
-  for (let i = 1; i < mobileStops.length; i++) {
-    const left = parseFloat(sceneOrigins[mobileStops[i - 1]]);
-    const right = parseFloat(sceneOrigins[mobileStops[i]]);
-    assert.ok(right > left, `Right arrow must move right from ${mobileStops[i - 1]} to ${mobileStops[i]}`);
-  }
+test('mobile garage goes left from Cybercab to Cybertruck to Lincoln, and right in reverse', () => {
+  assert.deepEqual(mobileStops, ['ford', 'cybertruck', 'cybercab']);
+  const start = mobileStops.indexOf('cybercab');
+  assert.equal(mobileStops[start - 1], 'cybertruck');
+  assert.equal(mobileStops[start - 2], 'ford');
+  assert.equal(mobileStops[start - 3], undefined);
+  assert.equal(mobileStops[start + 1], undefined);
 });
