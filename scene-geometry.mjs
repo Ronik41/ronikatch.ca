@@ -1,6 +1,8 @@
+import { experienceOrder } from './experience.mjs';
+
 export const sceneOrigins = { ford: '21% 64%', cybertruck: '49% 64%', cybercab: '79% 65%', whoop: '52.5% 86%', electrium: '35% 85%', exceed: '70% 84%' };
-// The mobile garage moves through cars by year; other roles live in All experiences.
-export const mobileStops = ['ford', 'cybertruck', 'cybercab'];
+// Left moves to an older experience; right moves to a newer one.
+export const mobileStops = experienceOrder.map(([id]) => id).reverse();
 
 /** object-fit: cover coordinates shared by scene artwork and interactive overlays. */
 export function coverPoint(point, viewport, image, position = [0.5, 0.5]) {
