@@ -2,6 +2,9 @@
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "redirects": [{ "source": "/life-story", "destination": "/career-story", "permanent": true }],
+  "redirects": [
+    { "source": "/life-story", "destination": "/career-story", "permanent": true },
+    { "source": "/family-tree", "destination": "https://family.ronikatch.ca", "permanent": false }
+  ],
   "rewrites": [{ "source": "/career-story", "destination": "/life-story.html" }]
 }
